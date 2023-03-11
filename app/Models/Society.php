@@ -25,16 +25,6 @@ class Society extends Model
 
     const EXCERPT_LENGTH = 250;
 
-    /**
-     * Set the user's first name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setUserIdAttribute($value)
-    {
-        $this->attributes['user_id'] = Auth::user()->id;
-    }
 
     /**
      * Function for return excerpt of given text.
