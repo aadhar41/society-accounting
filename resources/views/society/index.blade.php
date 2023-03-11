@@ -5,6 +5,7 @@
 @include('partials._select2Assests')
 @include('partials._datatableAssests')
 
+
 <!-- Main content -->
 <section class="content mt-2">
     <div class="container-fluid">
@@ -107,7 +108,7 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-sm" id="society-table">
+                                        <table class="table table-striped table-bordered table-sm display nowrap" style="width:100%" id="society-table">
                                             <thead>
                                                 <th>S.No</th>
                                                 <th>Unique Code</th>
@@ -140,11 +141,16 @@
 <!-- /.content -->
 
 
-
 <script>
+    
     var oTable = $('#society-table').DataTable({
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, 'All'],
+        ],
         processing: true,
-        "searching": true,
+        destroy: true,
+        searching: true,
         serverSide: true,
         ajax: {
             url: "{!! route('society.datatables') !!}",
@@ -153,7 +159,10 @@
                 d.name = $('#name').val();
             }
         },
-
+        dom: 'lBfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
         columns: [{
                 data: 'id',
                 name: 'id'
@@ -199,7 +208,6 @@
         order: [
             [0, 'asc']
         ],
-        searching: false,
         // bLengthChange:false,
     });
 
@@ -211,6 +219,10 @@
     $('#name').on('keyup', function(e) {
         oTable.draw();
         e.preventDefault();
+    });
+
+    $(document).ready(function() {
+        $('.select2').select2();
     });
 </script>
 

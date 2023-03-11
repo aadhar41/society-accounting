@@ -50,6 +50,17 @@ class SocietyController extends Controller
                         $q->where('societies.name', 'like', "%{$request->get('name')}%");
                     });
                 }
+
+                if (!empty($request['search']['value']) && $request['search']['value'] != '') {
+                    $query->where(function ($q) use ($request) {
+                        $q->where('societies.name', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('societies.unique_code', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('societies.contact', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('societies.address', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('societies.status', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('societies.created_at', 'like', "%{$request['search']['value']}%");
+                    });
+                }
             })
             ->addColumn('unique_code', function ($societydata) {
                 return $unique_code = (isset($societydata->unique_code)) ? ucwords($societydata->unique_code) : "";
