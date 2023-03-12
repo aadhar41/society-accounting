@@ -44,7 +44,8 @@
 </li>
 <li class="nav-item">
     <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-solid fa-building"></i>
+        <i class="nav-icon fas fa-gopuram"></i>
+        <!-- <i class="fa-sharp fa-regular fa-house-building"></i> -->
         <p>
             Societies
             <i class="right fas fa-angle-left"></i>
@@ -65,6 +66,31 @@
         </li>
     </ul>
 </li>
+
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-solid fa-building"></i>
+        <p>
+            Block
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('admin.block.create') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.block.list') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>List</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
 <li class="nav-item">
     <a href="javascript:void(0);" class="nav-link">
         <i class="nav-icon fas fa-th"></i>

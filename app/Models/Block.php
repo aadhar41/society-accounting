@@ -31,7 +31,7 @@ class Block extends Model
      */
     public function society()
     {
-        return $this->belongsTo('App\Models\Society', 'society')->select("id", "unique_code", "name")->where("status", "1");
+        return $this->belongsTo('App\Models\Society', 'society_id')->select("id", "unique_code", "name")->where("status", "1");
     }
 
     /**

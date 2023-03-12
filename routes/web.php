@@ -36,10 +36,34 @@ Route::prefix('society')->group(function () {
     Route::get(
         '/datatable',
         [App\Http\Controllers\SocietyController::class, 'datatable']
-    )->name('society.datatables')->withoutMiddleware([isAdmin::class]);
+    )->name('society.datatables');
 
     Route::get(
         '/delete/{id}',
         [App\Http\Controllers\SocietyController::class, 'destroy']
     )->name('society.delete');
+});
+
+
+// Route Group For Block Module.
+Route::prefix('block')->group(function () {
+    // Block Module
+    Route::get('/create', [App\Http\Controllers\BlockController::class, 'create'])->name('admin.block.create');
+    Route::post('/store', [App\Http\Controllers\BlockController::class, 'store'])->name('admin.block.store');
+    Route::get('/{society}/edit', [App\Http\Controllers\BlockController::class, 'edit'])->name('admin.block.edit');
+    Route::put('/update/{society}', [App\Http\Controllers\BlockController::class, 'update'])->name('admin.block.update');
+    Route::get('/list', [App\Http\Controllers\BlockController::class, 'index'])->name('admin.block.list');
+
+    Route::get('/enable/{id}', [App\Http\Controllers\BlockController::class, 'enable'])->name('admin.block.enable');
+    Route::get('/disable/{id}', [App\Http\Controllers\BlockController::class, 'disable'])->name('admin.block.disable');
+
+    Route::get(
+        '/datatable',
+        [App\Http\Controllers\BlockController::class, 'datatable']
+    )->name('block.datatables');
+
+    Route::get(
+        '/delete/{id}',
+        [App\Http\Controllers\BlockController::class, 'destroy']
+    )->name('block.delete');
 });

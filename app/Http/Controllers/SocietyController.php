@@ -15,13 +15,23 @@ use App\Http\Requests\SocietyStoreRequest;
 class SocietyController extends Controller
 {
     /**
+     * Apply default authentication middleware for backend routes.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $title = "society lists";
+        $title = "societies";
         $module = "society";
         $data = Society::active()->latest()->get();
         return view('society.index', compact('data', 'title', 'module'));

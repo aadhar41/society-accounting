@@ -26,3 +26,10 @@ if (!function_exists('getCities')) {
         return City::active()->orderBy('name', 'asc')->get()->pluck("name","id");
     }
 }
+
+if (!function_exists('getSocieties')) {
+    function getSocieties()
+    {
+        return Society::active()->orderBy('name', 'asc')->get()->pluck("name","id");
+    }
+}
