@@ -11,7 +11,7 @@ class SocietyObserver
 {
     /**
      * Handle the Society "created" event.
-     *
+     * register at app\Providers\EventServiceProvider.php
      * @param  \App\Models\Society  $society
      * @return void
      */

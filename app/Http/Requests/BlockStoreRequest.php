@@ -13,7 +13,7 @@ class BlockStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,25 @@ class BlockStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:80',
+            'society' => 'required|integer',
+            'total_flats' => 'required|integer',
+            'description' => 'required|string|max:600',
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name is required!',
+            'society.required' => 'Society field is required!',
+            'total_flats.required' => 'Total Flats is required!',
+            'description.required' => 'Description is required!'
         ];
     }
 }

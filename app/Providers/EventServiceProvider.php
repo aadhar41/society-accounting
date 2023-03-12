@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Observers\SocietyObserver;
 use App\Models\Society;
+use App\Observers\BlockObserver;
+use App\Models\Block;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Society::observe(SocietyObserver::class);
+        Block::observe(BlockObserver::class);
     }
 }
