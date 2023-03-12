@@ -11,30 +11,28 @@ use Illuminate\Pipeline\Pipeline;
 use Session;
 use Auth;
 
-class Society extends Model
+class Block extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SocietyModelTraits;
 
-    protected $table = 'societies';
+    protected $table = 'blocks';
 
-    protected $fillable = ['unique_code', 'user_id', 'name', 'slug', 'address', 'contact', 'description', 'country', 'state', 'city', 'postcode', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['unique_code', 'user_id', 'society_id', 'name', 'slug', 'total_flats', 'description', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     protected $guarded = ["user_id"];
 
     const EXCERPT_LENGTH = 250;
 
-     /**
+    /**
      * Function for eloquent relationship.
-     * Associated Blocks.
+     * Associated Society.
      * @return "returns eloquent relationship"
      */
-    public function blocks()
+    public function society()
     {
-        return $this->hasMany('App\Models\Block', 'society_id')->where('status', '1');
+        return $this->belongsTo('App\Models\Society', 'society')->select("id", "unique_code", "name")->where("status", "1");
     }
-
 
     /**
      * Function for return excerpt of given text.

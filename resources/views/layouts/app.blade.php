@@ -3,7 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    @if (!empty($title))
+    <title>{{ ucfirst($title) }}</title>
+    @else
     <title>{{ config('app.name') }}</title>
+    @endif
+    
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -36,7 +41,7 @@
         <div class="content-wrapper">
             <section class="content">
                 @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
                     {{session('success')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -44,7 +49,7 @@
                 </div>
                 @endif
                 @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
                     {{session('error')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

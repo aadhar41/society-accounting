@@ -10,15 +10,8 @@ use App\Models\State;
 use App\Models\City;
 use Illuminate\Support\Str;
 
-class SocietyFactory extends Factory
+class BlockFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Society::class;
-
     /**
      * Define the model's default state.
      *
@@ -28,16 +21,12 @@ class SocietyFactory extends Factory
     {
         return [
             'unique_code' => Str::random(10),
+            'user_id' => User::pluck('id')->random(),
+            'society_id' => Society::active()->pluck('id')->random(),
             'name' => $this->faker->company(),
             'slug' => $this->faker->sentence(),
-            'address' => $this->faker->sentence(),
+            'total_flats' => rand(50, 500),
             'description' => $this->faker->realText($maxNbChars = 200, $indexSize = 2),
-            'contact' => $this->faker->phoneNumber(),
-            'country' => Country::active()->pluck('id')->random(),
-            'state' => State::active()->pluck('id')->random(),
-            'city' => City::active()->pluck('id')->random(),
-            'postcode' => rand(302000, 302020),
-            'user_id' => 1,
             'status' => "1",
         ];
     }

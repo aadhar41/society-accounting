@@ -21,7 +21,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-
 // Route Group For Society Module.
 Route::prefix('society')->group(function () {
     // Society Module
@@ -29,7 +28,7 @@ Route::prefix('society')->group(function () {
     Route::post('/store', [App\Http\Controllers\SocietyController::class, 'store'])->name('admin.society.store');
     Route::get('/{society}/edit', [App\Http\Controllers\SocietyController::class, 'edit'])->name('admin.society.edit');
     Route::put('/update/{society}', [App\Http\Controllers\SocietyController::class, 'update'])->name('admin.society.update');
-    Route::get('/list', [App\Http\Controllers\SocietyController::class, 'lists'])->name('admin.society.list')->withoutMiddleware([isAdmin::class]);
+    Route::get('/list', [App\Http\Controllers\SocietyController::class, 'index'])->name('admin.society.list');
 
     Route::get('/enable/{id}', [App\Http\Controllers\SocietyController::class, 'enable'])->name('admin.society.enable');
     Route::get('/disable/{id}', [App\Http\Controllers\SocietyController::class, 'disable'])->name('admin.society.disable');

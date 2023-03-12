@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $module }}</li>
                         </ol>
                     </div>
@@ -39,8 +39,16 @@
                             <div class="card card-primary">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Quick Example <small>jQuery Validation</small>
+                                        {{ ucfirst($title) }}
                                     </h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <!-- /.card-header -->
 
@@ -137,7 +145,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <textarea name="address" id="address" rows="4" class=" form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" placeholder="Address">{{ old('address') }}</textarea>
+                                                <textarea name="address" id="address" rows="4" class="ckeditor form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" placeholder="Address">{{ old('address') }}</textarea>
                                                 @if($errors->has('address'))
                                                 <div class="invalid-feedback">
                                                     <strong>{{ $errors->first('address') }}</strong>
@@ -149,7 +157,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="description">Description</label>
-                                                <textarea name="description" id="description" rows="4" class=" form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description') }}</textarea>
+                                                <textarea name="description" id="description" rows="4" class="ckeditor form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description') }}</textarea>
                                                 @if($errors->has('description'))
                                                 <div class="invalid-feedback">
                                                     <strong>{{ $errors->first('description') }}</strong>
@@ -158,14 +166,12 @@
                                             </div>
                                         </div>
 
+                                        <button type="submit" class="btn btn-primary ml-2">
+                                            Submit
+                                        </button>
 
                                     </div>
                                     <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">
-                                            Submit
-                                        </button>
-                                    </div>
 
                                 </div>
                             </div>
@@ -191,5 +197,5 @@
         $('.select2').select2();
     });
 </script>
-
+@include('partials._ckeditor')
 @endsection
