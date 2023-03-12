@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plot;
 use App\Models\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,9 +11,9 @@ use Yajra\Datatables\Datatables;
 use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\BlockStoreRequest;
+use App\Http\Requests\PlotStoreRequest;
 
-class BlockController extends Controller
+class PlotController extends Controller
 {
     /**
      * Apply default authentication middleware for backend routes.
@@ -31,10 +32,10 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $title = "blocks";
-        $module = "block";
-        $data = Block::active()->latest()->get();
-        return view('block.index', compact('data', 'title', 'module'));
+        $title = "plots";
+        $module = "plot";
+        $data = Plot::active()->latest()->get();
+        return view('plot.index', compact('data', 'title', 'module'));
     }
 
     /**
@@ -131,39 +132,42 @@ class BlockController extends Controller
      */
     public function create()
     {
-        $title = "add block";
-        $module = "block";
+        $title = "add plot";
+        $module = "plot";
         $societies = getSocieties();
-        return view('block.create', compact('title', 'module', 'societies'));
+        $blocks = getBlocks();
+        return view('plot.create', compact('title', 'module', 'societies', 'blocks'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\BlockStoreRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BlockStoreRequest $request)
+    public function store(PlotStoreRequest $request)
     {
         $data = $request->input();
         try {
             $request->request->add(['user_id' => Auth::user()->id]);
             $request->request->add(['society_id' => $request->input('society')]);
+            $request->request->add(['block_id' => $request->input('block')]);
             $request->request->remove('society');
-            Block::create($request->all());
-            return redirect()->route('admin.block.list')->with('success', 'Insert successfully.');
+            $request->request->remove('block');
+            Plot::create($request->all());
+            return redirect()->route('admin.plot.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.block.create')->with('error', $e->getMessage());
+            return redirect()->route('admin.plot.create')->with('error', $e->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Block  $block
+     * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function show(Block $block)
+    public function show(Plot $plot)
     {
         //
     }
@@ -171,13 +175,13 @@ class BlockController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Block  $block
+     * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function edit(Block $block, Request $request)
+    public function edit(Plot $plot)
     {
         try {
-            $listings = Block::findOrFail($block->id);
+            $listings = Block::findOrFail($plot->id);
             $title = "block";
             $module = "block";
             $societies = getSocieties();
@@ -190,11 +194,11 @@ class BlockController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\BlockStoreRequest  $request
-     * @param  \App\Models\Block  $block
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function update(BlockStoreRequest $request, Block $block)
+    public function update(Request $request, Plot $plot)
     {
         try {
             $request->request->add(['user_id' => Auth::user()->id]);
@@ -202,7 +206,7 @@ class BlockController extends Controller
             $request->request->remove('society');
             $request->request->remove('_method');
             $request->request->remove('_token');
-            Block::where(['id' => $block->id])->update($request->all());
+            Block::where(['id' => $plot->id])->update($request->all());
             return redirect()->route('admin.block.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.block.list')->with('error', $e->getMessage());
@@ -244,10 +248,10 @@ class BlockController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Block  $block
+     * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Block $block, $id)
+    public function destroy(Plot $plot, $id)
     {
         $block = Block::findOrFail($id);
         $block->delete();
