@@ -39,7 +39,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" name="name" value="{{ old('name') }}" id="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" placeholder="Name" autocomplete="off" />
+                                        <input type="text" name="name" value="{{ old('name', $listings->name) }}" id="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" placeholder="Name" autocomplete="off" />
                                         @if($errors->has('name'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('name') }}</strong>
@@ -51,7 +51,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="contact">Contact :</label>
-                                        <input type="number" minlength="10" maxlength="10" name="contact" value="{{ old('contact') }}" id="contact" class="form-control {{ $errors->has('contact') ? 'is-invalid' : '' }}" placeholder="Contact" autocomplete="off" />
+                                        <input type="number" minlength="10" maxlength="10" name="contact" value="{{ old('contact', $listings->contact) }}" id="contact" class="form-control {{ $errors->has('contact') ? 'is-invalid' : '' }}" placeholder="Contact" autocomplete="off" />
                                         @if($errors->has('contact'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('contact') }}</strong>
@@ -63,7 +63,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="postcode">Postcode :</label>
-                                        <input type="number" name="postcode" minlength="6" maxlength="6" value="{{ old('postcode') }}" id="postcode" class="form-control {{ $errors->has('postcode') ? 'is-invalid' : '' }}" placeholder="Postcode" autocomplete="off" />
+                                        <input type="number" name="postcode" minlength="6" maxlength="6" value="{{ old('postcode', $listings->postcode) }}" id="postcode" class="form-control {{ $errors->has('postcode') ? 'is-invalid' : '' }}" placeholder="Postcode" autocomplete="off" />
                                         @if($errors->has('postcode'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('postcode') }}</strong>
@@ -79,7 +79,7 @@
                                         <select name="country" id="country" class="form-control select2 {{ $errors->has('country') ? 'is-invalid' : '' }}">
                                             <option value="">Select Country</option>
                                             @foreach($countries as $id => $name)
-                                            <option value="{{ $id }}" {{ (old("country") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            <option value="{{ $id }}" {{ (old("country", $listings->country) == $id ? "selected":"") }} >{{ ucwords($name) }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('country'))
@@ -96,7 +96,7 @@
                                         <select name="state" id="state" class="form-control select2 {{ $errors->has('state') ? 'is-invalid' : '' }}">
                                             <option value="">Select States</option>
                                             @foreach($states as $id => $name)
-                                            <option value="{{ $id }}" {{ (old("state") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            <option value="{{ $id }}" {{ (old("state", $listings->state) == $id ? "selected":"") }} >{{ ucwords($name) }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('state'))
@@ -113,7 +113,7 @@
                                         <select name="city" id="city" class="form-control select2 {{ $errors->has('city') ? 'is-invalid' : '' }}">
                                             <option value="">Select City</option>
                                             @foreach($cities as $id => $name)
-                                            <option value="{{ $id }}" {{ (old("city") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            <option value="{{ $id }}" {{ (old("city", $listings->city) == $id ? "selected":"") }} >{{ ucwords($name) }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('city'))
@@ -127,7 +127,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="address">Address</label>
-                                        <textarea name="address" id="address" rows="4" class="ckeditor form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" placeholder="Address">{{ old('address') }}</textarea>
+                                        <textarea name="address" id="address" rows="4" class="ckeditor form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" placeholder="Address">{{ old('address', $listings->address) }}</textarea>
                                         @if($errors->has('address'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('address') }}</strong>
@@ -139,7 +139,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea name="description" id="description" rows="4" class="ckeditor form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description') }}</textarea>
+                                        <textarea name="description" id="description" rows="4" class="ckeditor form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description', $listings->description) }}</textarea>
                                         @if($errors->has('description'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('description') }}</strong>

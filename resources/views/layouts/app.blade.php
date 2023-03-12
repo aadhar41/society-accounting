@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    @if ($title)
+    @if (!empty($title))
     <title>{{ ucfirst($title) }}</title>
     @else
     <title>{{ config('app.name') }}</title>
@@ -41,7 +41,7 @@
         <div class="content-wrapper">
             <section class="content">
                 @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
                     {{session('success')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -49,7 +49,7 @@
                 </div>
                 @endif
                 @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
                     {{session('error')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

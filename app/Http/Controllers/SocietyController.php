@@ -139,7 +139,7 @@ class SocietyController extends Controller
         try {
             $request->request->add(['user_id' => Auth::user()->id]);
             Society::create($request->all());
-            return redirect()->route('admin.society.create')->with('success', 'Insert successfully.');
+            return redirect()->route('admin.society.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.society.create')->with('error', $e->getMessage());
         }
@@ -170,7 +170,7 @@ class SocietyController extends Controller
         $listings = Society::findOrFail($society->id);
         $title = "society";
         $module = "society";
-        return view('society.edit', compact('listings', 'title', 'module','countries','states','cities'));
+        return view('society.edit', compact('listings', 'title', 'module', 'countries', 'states', 'cities'));
     }
 
     /**
@@ -180,9 +180,48 @@ class SocietyController extends Controller
      * @param  \App\Models\Society  $society
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Society $society)
+    public function update(SocietyStoreRequest $request, Society $society)
     {
-        //
+        $data = $request->input();
+        try {
+            $request->request->add(['user_id' => Auth::user()->id]);
+            Society::where(['id' => $society->id])->update($request->validated());
+            return redirect()->route('admin.society.list')->with('success', 'Updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.society.edit')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Enable the specified profession in storage.
+     *
+     * @param $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Society  $profession
+     * @return \Illuminate\Http\Response
+     */
+    public function enable(Request $request, Society $society, $id)
+    {
+        $society = Society::findOrFail($id);
+        $society->status = "1";
+        $society->save();
+        return redirect()->route('admin.society.list')->with('success', 'Record enabled.');
+    }
+
+    /**
+     * Disable the specified profession in storage.
+     * 
+     * @param $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Society  $society
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(Request $request, Society $society, $id)
+    {
+        $society = Society::findOrFail($id);
+        $society->status = "0";
+        $society->save();
+        return redirect()->route('admin.society.list')->with('warning', 'Record disabled.');
     }
 
     /**
@@ -191,8 +230,14 @@ class SocietyController extends Controller
      * @param  \App\Models\Society  $society
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Society $society)
+    public function destroy(Society $society, $id)
     {
-        //
+         // $society = Profession::where('id', $id)->withTrashed()->first();
+
+         $society = Society::findOrFail($id);
+         $society->delete();
+ 
+         // Shows the remaining list of societies.
+         return redirect()->route('admin.society.list')->with('error', 'Record deleted successfully.');
     }
 }
