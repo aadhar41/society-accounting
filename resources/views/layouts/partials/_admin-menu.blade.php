@@ -91,6 +91,30 @@
     </ul>
 </li>
 
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas far fa-map"></i>
+        <p>
+            Plots
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('admin.plot.create') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Add</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.plot.list') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>List</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
 <?php /* ?>
 <li class="nav-item">
     <a href="javascript:void(0);" class="nav-link">

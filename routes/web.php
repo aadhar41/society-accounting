@@ -67,3 +67,27 @@ Route::prefix('block')->group(function () {
         [App\Http\Controllers\BlockController::class, 'destroy']
     )->name('block.delete');
 });
+
+
+// Route Group For Plot Module.
+Route::prefix('plot')->group(function () {
+    // Plot Module
+    Route::get('/create', [App\Http\Controllers\PlotController::class, 'create'])->name('admin.plot.create');
+    Route::post('/store', [App\Http\Controllers\PlotController::class, 'store'])->name('admin.plot.store');
+    Route::get('/{plot}/edit', [App\Http\Controllers\PlotController::class, 'edit'])->name('admin.plot.edit');
+    Route::put('/update/{plot}', [App\Http\Controllers\PlotController::class, 'update'])->name('admin.plot.update');
+    Route::get('/list', [App\Http\Controllers\PlotController::class, 'index'])->name('admin.plot.list');
+
+    Route::get('/enable/{id}', [App\Http\Controllers\PlotController::class, 'enable'])->name('admin.plot.enable');
+    Route::get('/disable/{id}', [App\Http\Controllers\PlotController::class, 'disable'])->name('admin.plot.disable');
+
+    Route::get(
+        '/datatable',
+        [App\Http\Controllers\PlotController::class, 'datatable']
+    )->name('plot.datatables');
+
+    Route::get(
+        '/delete/{id}',
+        [App\Http\Controllers\PlotController::class, 'destroy']
+    )->name('plot.delete');
+});

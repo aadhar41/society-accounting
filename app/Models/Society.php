@@ -25,14 +25,15 @@ class Society extends Model
 
     const EXCERPT_LENGTH = 250;
 
-     /**
+    /**
      * Function for eloquent relationship.
      * Associated Blocks.
      * @return "returns eloquent relationship"
      */
     public function blocks()
     {
-        return $this->hasMany('App\Models\Block', 'society_id')->where('status', '1');
+        // return $this->hasMany('App\Models\Block', 'society_id')->where('status', '1');
+        return $this->hasMany(Block::class)->where('status', '1');
     }
 
 

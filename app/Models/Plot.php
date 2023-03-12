@@ -11,29 +11,18 @@ use Illuminate\Pipeline\Pipeline;
 use Session;
 use Auth;
 
-class Block extends Model
+class Plot extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'blocks';
+    protected $table = 'plots';
 
-    protected $fillable = ['unique_code', 'user_id', 'society_id', 'name', 'slug', 'total_flats', 'description', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['unique_code', 'user_id', 'society_id', 'block_id', 'name', 'slug', 'total_floors', 'total_flats', 'description', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     protected $guarded = ["user_id"];
 
     const EXCERPT_LENGTH = 250;
-
-    /**
-     * Function for eloquent relationship.
-     * Associated Blocks.
-     * @return "returns eloquent relationship"
-     */
-    public function plots()
-    {
-        // return $this->hasMany('App\Models\Plot', 'block_id')->where('status', '1');
-        return $this->hasMany(Plot::class)->where('status', '1');
-    }
 
     /**
      * Function for eloquent relationship.
@@ -57,7 +46,7 @@ class Block extends Model
 
     /**
      * Function for eloquent relationship.
-     * Associated Society.
+     * Associated Block.
      * @return "returns eloquent relationship"
      */
     public function block()
