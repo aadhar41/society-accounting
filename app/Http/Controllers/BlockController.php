@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Block;
 use Illuminate\Http\Request;
-use App\Models\Society;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
@@ -132,11 +131,6 @@ class BlockController extends Controller
      */
     public function create()
     {
-        if ($_POST) {
-            echo "<pre>";
-            print_r($_POST);
-            die;
-        }
         $title = "add block";
         $module = "block";
         $societies = getSocieties();
@@ -180,21 +174,71 @@ class BlockController extends Controller
      * @param  \App\Models\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function edit(Block $block)
+    public function edit(Block $block, Request $request)
     {
-        //
+        try {
+            $listings = Block::findOrFail($block->id);
+            $title = "block";
+            $module = "block";
+            $societies = getSocieties();
+            return view('block.edit', compact('listings', 'title', 'module','societies'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.block.edit')->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\BlockStoreRequest  $request
+     * @param  \App\Models\Block  $block
+     * @return \Illuminate\Http\Response
+     */
+    public function update(BlockStoreRequest $request, Block $block)
+    {
+        try {
+            $request->request->add(['user_id' => Auth::user()->id]);
+            $request->request->add(['society_id' => $request->input('society')]);
+            $request->request->remove('society');
+            $request->request->remove('_method');
+            $request->request->remove('_token');
+            Block::where(['id' => $block->id])->update($request->all());
+            return redirect()->route('admin.block.list')->with('success', 'Updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.block.list')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Enable the specified block in storage.
+     *
+     * @param $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Block $block
+     * @return \Illuminate\Http\Response
+     */
+    public function enable(Request $request, Block $block, $id)
+    {
+        $block = Block::findOrFail($id);
+        $block->status = "1";
+        $block->save();
+        return redirect()->route('admin.block.list')->with('success', 'Record enabled.');
+    }
+
+    /**
+     * Disable the specified block in storage.
+     * 
+     * @param $id
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Block $block)
+    public function disable(Request $request, Block $block, $id)
     {
-        //
+        $block = Block::findOrFail($id);
+        $block->status = "0";
+        $block->save();
+        return redirect()->route('admin.block.list')->with('warning', 'Record disabled.');
     }
 
     /**
@@ -203,8 +247,12 @@ class BlockController extends Controller
      * @param  \App\Models\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Block $block)
+    public function destroy(Block $block, $id)
     {
-        //
+        $block = Block::findOrFail($id);
+        $block->delete();
+
+        // Shows the remaining list of blocks.
+        return redirect()->route('admin.block.list')->with('error', 'Record deleted successfully.');
     }
 }

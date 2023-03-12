@@ -91,6 +91,7 @@
     </ul>
 </li>
 
+<?php /* ?>
 <li class="nav-item">
     <a href="javascript:void(0);" class="nav-link">
         <i class="nav-icon fas fa-th"></i>
@@ -693,3 +694,4 @@
         <p>Informational</p>
     </a>
 </li>
+<?php */ ?>
