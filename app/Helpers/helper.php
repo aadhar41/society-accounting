@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Block;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
@@ -37,6 +38,6 @@ if (!function_exists('getSocieties')) {
 if (!function_exists('getBlocks')) {
     function getBlocks()
     {
-        return Society::active()->orderBy('name', 'asc')->get()->pluck("name","id");
+        return Block::active()->orderBy('name', 'asc')->get()->pluck("name","id");
     }
 }

@@ -28,7 +28,7 @@
             <!-- /.container-fluid -->
         </section>
 
-        <form action="{{ route('admin.block.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.plot.store') }}" method="POST" enctype="multipart/form-data">
             {{ method_field('POST') }}
             @csrf
             <!-- Main content -->
@@ -41,13 +41,13 @@
                             <div class="card card-default">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <a href="{{ route('admin.block.create') }}" class="btn btn-primary">
+                                        <a href="{{ route('admin.plot.create') }}" class="btn btn-primary">
                                             <i class="fas fa-arrow-circle-left"></i>&nbsp;
                                             Add Record
                                         </a>
                                     </h3>
                                     <div class="card-tools">
-                                        <a href="{{ route('admin.block.list') }}" class="btn btn-primary">
+                                        <a href="{{ route('admin.plot.list') }}" class="btn btn-primary">
                                             <i class="fas fa-recycle"></i>&nbsp;
                                             Clear Search
                                         </a>
@@ -108,12 +108,14 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-sm display nowrap" style="width:100%" id="block-table">
+                                        <table class="table table-striped table-bordered table-sm display nowrap" style="width:100%" id="plot-table">
                                             <thead>
                                                 <th>S.No</th>
                                                 <th>Code</th>
-                                                <th>Name</th>
                                                 <th>Society</th>
+                                                <th>Block</th>
+                                                <th>Plot</th>
+                                                <th>Total Floors</th>
                                                 <th>Total Flats</th>
                                                 <!-- <th>Description</th> -->
                                                 <th>Status</th>
@@ -144,7 +146,7 @@
 
 <script>
     
-    var oTable = $('#block-table').DataTable({
+    var oTable = $('#plot-table').DataTable({
         lengthMenu: [
             [10, 25, 50, 100, 250, 500, -1],
             [10, 25, 50, 100, 250, 500, 'All'],
@@ -154,7 +156,7 @@
         searching: true,
         serverSide: true,
         ajax: {
-            url: "{!! route('block.datatables') !!}",
+            url: "{!! route('plot.datatables') !!}",
             data: function(d) {
                 d.status = $('#status').val();
                 d.name = $('#name').val();
@@ -173,12 +175,20 @@
                 name: 'unique_code'
             },
             {
+                data: 'society',
+                name: 'society'
+            },
+            {
+                data: 'block',
+                name: 'block'
+            },
+            {
                 data: 'name',
                 name: 'name'
             },
             {
-                data: 'society',
-                name: 'society'
+                data: 'total_floors',
+                name: 'total_floors'
             },
             {
                 data: 'total_flats',
