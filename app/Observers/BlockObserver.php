@@ -18,7 +18,7 @@ class BlockObserver
      */
     public function created(Block $block)
     {
-        $block->slug = Str::slug($block->title) . "-" . time();
+        $block->slug = Str::slug($block->name) . "-" . time();
         $str = "BLCK";
         $block->unique_code = str_pad($str, 10, "0", STR_PAD_RIGHT) . $block->id;
         $block->save();

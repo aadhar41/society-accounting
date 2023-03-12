@@ -17,7 +17,7 @@ class SocietyObserver
      */
     public function created(Society $society)
     {
-        $society->slug = Str::slug($society->title) . "-" . time();
+        $society->slug = Str::slug($society->name) . "-" . time();
         $str = "SCTY";
         $society->unique_code = str_pad($str, 10, "0", STR_PAD_RIGHT) . $society->id;
         $society->save();

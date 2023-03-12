@@ -14,19 +14,38 @@ use Session;
 use Auth;
 
 
-trait SocietyModelTraits
+
+trait PlotModelTraits
 {
     /**
      * Function for eloquent relationship.
-     * Associated Blocks.
+     * Associated User.
      * @return "returns eloquent relationship"
      */
-    public function blocks()
+    public function createdBy()
     {
-        // return $this->hasMany('App\Models\Block', 'society_id')->where('status', '1');
-        return $this->hasMany(Block::class)->where('status', '1');
+        return $this->belongsTo('App\Models\User', 'user_id')->select("id", "email", "name");
     }
 
+    /**
+     * Function for eloquent relationship.
+     * Associated Society.
+     * @return "returns eloquent relationship"
+     */
+    public function society()
+    {
+        return $this->belongsTo('App\Models\Society', 'society_id')->select("id", "unique_code", "name")->where("status", "1");
+    }
+
+    /**
+     * Function for eloquent relationship.
+     * Associated Block.
+     * @return "returns eloquent relationship"
+     */
+    public function block()
+    {
+        return $this->belongsTo('App\Models\Block', 'block_id')->select("id", "unique_code", "name")->where("status", "1");
+    }
 
     /**
      * Function for return excerpt of given text.

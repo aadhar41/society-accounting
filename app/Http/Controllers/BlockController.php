@@ -134,7 +134,7 @@ class BlockController extends Controller
         $title = "add block";
         $module = "block";
         $societies = getSocieties();
-        return view('block.create', compact('title', 'module','societies'));
+        return view('block.create', compact('title', 'module', 'societies'));
     }
 
     /**
@@ -181,7 +181,7 @@ class BlockController extends Controller
             $title = "block";
             $module = "block";
             $societies = getSocieties();
-            return view('block.edit', compact('listings', 'title', 'module','societies'));
+            return view('block.edit', compact('listings', 'title', 'module', 'societies'));
         } catch (\Exception $e) {
             return redirect()->route('admin.block.edit')->with('error', $e->getMessage());
         }

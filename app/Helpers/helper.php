@@ -33,3 +33,10 @@ if (!function_exists('getSocieties')) {
         return Society::active()->orderBy('name', 'asc')->get()->pluck("name","id");
     }
 }
+
+if (!function_exists('getBlocks')) {
+    function getBlocks()
+    {
+        return Society::active()->orderBy('name', 'asc')->get()->pluck("name","id");
+    }
+}

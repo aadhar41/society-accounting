@@ -31,7 +31,7 @@ class PlotSeeder extends Seeder
             ->each(function ($u) {
                 $u->blocks()
                     ->saveMany(
-                        \App\Models\Block::factory(3)->make()
+                        \App\Models\Block::factory(5)->make()
                     )->each(function ($p) {
                         $p->plots()
                             ->saveMany(
