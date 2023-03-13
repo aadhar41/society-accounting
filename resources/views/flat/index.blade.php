@@ -28,7 +28,7 @@
             <!-- /.container-fluid -->
         </section>
 
-        <form action="{{ route('admin.plot.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.flat.store') }}" method="POST" enctype="multipart/form-data">
             {{ method_field('POST') }}
             @csrf
             <!-- Main content -->
@@ -41,13 +41,13 @@
                             <div class="card card-default">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        <a href="{{ route('admin.plot.create') }}" class="btn btn-primary">
+                                        <a href="{{ route('admin.flat.create') }}" class="btn btn-primary">
                                             <i class="fas fa-arrow-circle-left"></i>&nbsp;
                                             Add Record
                                         </a>
                                     </h3>
                                     <div class="card-tools">
-                                        <a href="{{ route('admin.plot.list') }}" class="btn btn-primary">
+                                        <a href="{{ route('admin.flat.list') }}" class="btn btn-primary">
                                             <i class="fas fa-recycle"></i>&nbsp;
                                             Clear Search
                                         </a>
@@ -108,15 +108,19 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-sm display nowrap" style="width:100%" id="plot-table">
+                                        <table class="table table-striped table-bordered table-sm display nowrap" style="width:100%" id="flat-table">
                                             <thead>
                                                 <th>S.No</th>
                                                 <th>Code</th>
                                                 <th>Society</th>
                                                 <th>Block</th>
                                                 <th>Plot</th>
-                                                <th>Total Floors</th>
-                                                <th>Total Flats</th>
+                                                <th>Owner</th>
+                                                <th>Flat No</th>
+                                                <th>Mobile No</th>
+                                                <th>Property Type</th>
+                                                <th>Tenant Name</th>
+                                                <th>Tenant Contact</th>
                                                 <!-- <th>Description</th> -->
                                                 <th>Status</th>
                                                 <th>Created At</th>
@@ -146,17 +150,17 @@
 
 <script>
     
-    var oTable = $('#plot-table').DataTable({
+    var oTable = $('#flat-table').DataTable({
         lengthMenu: [
-            [10, 25, 50, 100, 250, 500, -1],
-            [10, 25, 50, 100, 250, 500, 'All'],
+            [10, 25, 50, 100, 250, 500, 1000, -1],
+            [10, 25, 50, 100, 250, 500, 1000, 'All'],
         ],
         processing: true,
         destroy: true,
         searching: true,
         serverSide: true,
         ajax: {
-            url: "{!! route('plot.datatables') !!}",
+            url: "{!! route('flat.datatables') !!}",
             data: function(d) {
                 d.status = $('#status').val();
                 d.name = $('#name').val();
@@ -183,16 +187,32 @@
                 name: 'block'
             },
             {
+                data: 'plot',
+                name: 'plot'
+            },
+            {
                 data: 'name',
                 name: 'name'
             },
             {
-                data: 'total_floors',
-                name: 'total_floors'
+                data: 'flat_no',
+                name: 'flat_no'
             },
             {
-                data: 'total_flats',
-                name: 'total_flats'
+                data: 'mobile_no',
+                name: 'mobile_no'
+            },
+            {
+                data: 'property_type',
+                name: 'property_type'
+            },
+            {
+                data: 'tenant_name',
+                name: 'tenant_name'
+            },
+            {
+                data: 'tenant_contact',
+                name: 'tenant_contact'
             },
             // {
             //     data: 'description',

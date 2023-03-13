@@ -12,6 +12,8 @@ use App\Observers\BlockObserver;
 use App\Models\Block;
 use App\Observers\PlotObserver;
 use App\Models\Plot;
+use App\Observers\FlatObserver;
+use App\Models\Flat;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,5 +38,6 @@ class EventServiceProvider extends ServiceProvider
         Society::observe(SocietyObserver::class);
         Block::observe(BlockObserver::class);
         Plot::observe(PlotObserver::class);
+        Flat::observe(FlatObserver::class);
     }
 }

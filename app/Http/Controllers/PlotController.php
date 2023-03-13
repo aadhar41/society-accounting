@@ -47,79 +47,86 @@ class PlotController extends Controller
     {
         // return Datatables::of(Block::query())->make(true);
 
-        $blockdata = Block::select('blocks.id', 'blocks.unique_code', 'blocks.society_id', 'blocks.name', 'blocks.total_flats', 'blocks.description', 'blocks.status', 'blocks.created_at', 'blocks.updated_at');
-        return Datatables::of($blockdata)
+        $plotdata = Plot::select('plots.id', 'plots.unique_code', 'plots.society_id', 'plots.block_id', 'plots.name', 'plots.total_floors' ,'plots.total_flats', 'plots.description', 'plots.status', 'plots.created_at', 'plots.updated_at');
+        return Datatables::of($plotdata)
             ->filter(function ($query) use ($request) {
                 if ($request->has('status') && $request->get('status') != '') {
                     $query->where(function ($q) use ($request) {
-                        $q->where('blocks.status', 'like', "%{$request->get('status')}%");
+                        $q->where('plots.status', 'like', "%{$request->get('status')}%");
                     });
                 }
 
                 if ($request->has('name') && $request->get('name') != '') {
                     $query->where(function ($q) use ($request) {
-                        $q->where('blocks.name', 'like', "%{$request->get('name')}%");
+                        $q->where('plots.name', 'like', "%{$request->get('name')}%");
                     });
                 }
 
                 if (!empty($request['search']['value']) && $request['search']['value'] != '') {
                     $query->where(function ($q) use ($request) {
-                        $q->where('blocks.name', 'like', "%{$request['search']['value']}%");
-                        $q->orWhere('blocks.unique_code', 'like', "%{$request['search']['value']}%");
-                        $q->orWhere('blocks.total_flats', 'like', "%{$request['search']['value']}%");
-                        $q->orWhere('blocks.description', 'like', "%{$request['search']['value']}%");
-                        $q->orWhere('blocks.created_at', 'like', "%{$request['search']['value']}%");
+                        $q->where('plots.name', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('plots.unique_code', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('plots.total_floors', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('plots.total_flats', 'like', "%{$request['search']['value']}%");
+                        // $q->orWhere('plots.description', 'like', "%{$request['search']['value']}%");
+                        $q->orWhere('plots.created_at', 'like', "%{$request['search']['value']}%");
                     });
                 }
             })
-            ->addColumn('unique_code', function ($blockdata) {
-                return $unique_code = (isset($blockdata->unique_code)) ? ucwords($blockdata->unique_code) : "";
+            ->addColumn('unique_code', function ($plotdata) {
+                return $unique_code = (isset($plotdata->unique_code)) ? ucwords($plotdata->unique_code) : "";
             })
-            ->addColumn('society', function ($blockdata) {
-                return $society = (isset($blockdata->society->name)) ? ucwords($blockdata->society->name) : "";
+            ->addColumn('society', function ($plotdata) {
+                return $society = (isset($plotdata->society->name)) ? ucwords($plotdata->society->name) : "";
             })
-            ->addColumn('name', function ($blockdata) {
-                return $name = (isset($blockdata->name)) ? ucwords($blockdata->name) : "";
+            ->addColumn('block', function ($plotdata) {
+                return $block = (isset($plotdata->block->name)) ? ucwords($plotdata->block->name) : "";
             })
-            ->addColumn('total_flats', function ($blockdata) {
-                return $total_flats = (isset($blockdata->total_flats)) ? ucwords($blockdata->total_flats) : "";
+            ->addColumn('name', function ($plotdata) {
+                return $name = (isset($plotdata->name)) ? ucwords($plotdata->name) : "";
             })
-            // ->addColumn('description', function ($blockdata) {
-            //     return $description = (isset($blockdata->description)) ? ucwords($blockdata->description) : "";
+            ->addColumn('total_floors', function ($plotdata) {
+                return $total_floors = (isset($plotdata->total_floors)) ? ucwords($plotdata->total_floors) : "";
+            })
+            ->addColumn('total_flats', function ($plotdata) {
+                return $total_flats = (isset($plotdata->total_flats)) ? ucwords($plotdata->total_flats) : "";
+            })
+            // ->addColumn('description', function ($plotdata) {
+            //     return $description = (isset($plotdata->description)) ? ucwords($plotdata->description) : "";
             // })
-            ->addColumn('created_at', function ($blockdata) {
-                return $created_at = (isset($blockdata->created_at)) ? date("F j, Y, g:i a", strtotime($blockdata->created_at)) : "";
+            ->addColumn('created_at', function ($plotdata) {
+                return $created_at = (isset($plotdata->created_at)) ? date("F j, Y, g:i a", strtotime($plotdata->created_at)) : "";
             })
-            ->addColumn('status', function ($blockdata) {
-                return $status = (isset($blockdata->status) && ($blockdata->status == 1)) ? 'Enabled' : 'Disabled';
+            ->addColumn('status', function ($plotdata) {
+                return $status = (isset($plotdata->status) && ($plotdata->status == 1)) ? 'Enabled' : 'Disabled';
             })
-            ->addColumn('action', function ($blockdata) {
+            ->addColumn('action', function ($plotdata) {
 
                 $link = '
                     <div class="btn-group">
-                        <a href="' . route('block.delete', $blockdata->id) . '" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm(\'Do you really want to trash the entry?\');" ><i class="fas fa-trash-alt"></i></a>
+                        <a href="' . route('plot.delete', $plotdata->id) . '" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm(\'Do you really want to trash the entry?\');" ><i class="fas fa-trash-alt"></i></a>
                     </div>
                 ';
 
                 $activelink = '
                         <div class="btn-group">
-                            <a href="' . route('admin.block.enable', $blockdata->id) . '" class="btn btn-sm btn-warning" title="Enable"><i class="fas fa-lock"></i></a>
+                            <a href="' . route('admin.plot.enable', $plotdata->id) . '" class="btn btn-sm btn-warning" title="Enable"><i class="fas fa-lock"></i></a>
                         </div>
                     ';
                 $inactivelink = '
                         <div class="btn-group">
-                            <a href="' . route('admin.block.disable', $blockdata->id) . '" class="btn btn-sm btn-success" title="Disable"><i class="fas fa-lock-open"></i></a>
+                            <a href="' . route('admin.plot.disable', $plotdata->id) . '" class="btn btn-sm btn-success" title="Disable"><i class="fas fa-lock-open"></i></a>
                         </div>
                     ';
 
                 $editlink = '
                     <div class="btn-group">
-                        <a href="' . route('admin.block.edit', $blockdata->id) . '" class="btn btn-sm  mt-1 mb-1 bg-pink" title="Edit" ><i class="fas fa-pencil-alt"></i></a>
+                        <a href="' . route('admin.plot.edit', $plotdata->id) . '" class="btn btn-sm  mt-1 mb-1 bg-pink" title="Edit" ><i class="fas fa-pencil-alt"></i></a>
                     </div>
                 ';
 
-                $final = ($blockdata->status == 1) ? $editlink . $link . $inactivelink : $editlink . $link . $activelink;
-                // $link = '<a href="' . route('block.delete', $blockdata->id) . '" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> ';
+                $final = ($plotdata->status == 1) ? $editlink . $link . $inactivelink : $editlink . $link . $activelink;
+                // $link = '<a href="' . route('block.delete', $plotdata->id) . '" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> ';
                 return $final;
             })
             ->make(true);
@@ -181,68 +188,71 @@ class PlotController extends Controller
     public function edit(Plot $plot)
     {
         try {
-            $listings = Block::findOrFail($plot->id);
-            $title = "block";
-            $module = "block";
+            $listings = Plot::findOrFail($plot->id);
+            $title = "plot";
+            $module = "plot";
             $societies = getSocieties();
-            return view('block.edit', compact('listings', 'title', 'module', 'societies'));
+            $blocks = getBlocks();
+            return view('plot.edit', compact('listings', 'title', 'module', 'societies','blocks'));
         } catch (\Exception $e) {
-            return redirect()->route('admin.block.edit')->with('error', $e->getMessage());
+            return redirect()->route('admin.plot.edit')->with('error', $e->getMessage());
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\PlotStoreRequest  $request
      * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Plot $plot)
+    public function update(PlotStoreRequest $request, Plot $plot)
     {
         try {
             $request->request->add(['user_id' => Auth::user()->id]);
             $request->request->add(['society_id' => $request->input('society')]);
+            $request->request->add(['block_id' => $request->input('block')]);
             $request->request->remove('society');
+            $request->request->remove('block');
             $request->request->remove('_method');
             $request->request->remove('_token');
-            Block::where(['id' => $plot->id])->update($request->all());
-            return redirect()->route('admin.block.list')->with('success', 'Updated successfully.');
+            Plot::where(['id' => $plot->id])->update($request->all());
+            return redirect()->route('admin.plot.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.block.list')->with('error', $e->getMessage());
+            return redirect()->route('admin.plot.list')->with('error', $e->getMessage());
         }
     }
 
     /**
-     * Enable the specified block in storage.
+     * Enable the specified plot in storage.
      *
      * @param $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Block $block
+     * @param  \App\Models\Plot $plot
      * @return \Illuminate\Http\Response
      */
-    public function enable(Request $request, Block $block, $id)
+    public function enable(Request $request, Plot $plot, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->status = "1";
-        $block->save();
-        return redirect()->route('admin.block.list')->with('success', 'Record enabled.');
+        $plot = Plot::findOrFail($id);
+        $plot->status = "1";
+        $plot->save();
+        return redirect()->route('admin.plot.list')->with('success', 'Record enabled.');
     }
 
     /**
-     * Disable the specified block in storage.
+     * Disable the specified Plot in storage.
      * 
      * @param $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Block  $block
+     * @param  \App\Models\Plot  $plot
      * @return \Illuminate\Http\Response
      */
-    public function disable(Request $request, Block $block, $id)
+    public function disable(Request $request, Plot $plot, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->status = "0";
-        $block->save();
-        return redirect()->route('admin.block.list')->with('warning', 'Record disabled.');
+        $plot = Plot::findOrFail($id);
+        $plot->status = "0";
+        $plot->save();
+        return redirect()->route('admin.plot.list')->with('warning', 'Record disabled.');
     }
 
     /**
@@ -253,10 +263,10 @@ class PlotController extends Controller
      */
     public function destroy(Plot $plot, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->delete();
+        $plot = Plot::findOrFail($id);
+        $plot->delete();
 
-        // Shows the remaining list of blocks.
-        return redirect()->route('admin.block.list')->with('error', 'Record deleted successfully.');
+        // Shows the remaining list of plots.
+        return redirect()->route('admin.plot.list')->with('error', 'Record deleted successfully.');
     }
 }

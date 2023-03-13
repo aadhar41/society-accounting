@@ -91,3 +91,56 @@ Route::prefix('plot')->group(function () {
         [App\Http\Controllers\PlotController::class, 'destroy']
     )->name('plot.delete');
 });
+
+
+// Route Group For Flat Module.
+Route::prefix('flat')->group(function () {
+    // Flat Module
+    Route::get('/create', [App\Http\Controllers\FlatController::class, 'create'])->name('admin.flat.create');
+    Route::post('/store', [App\Http\Controllers\FlatController::class, 'store'])->name('admin.flat.store');
+    Route::get('/{flat}/edit', [App\Http\Controllers\FlatController::class, 'edit'])->name('admin.flat.edit');
+    Route::put('/update/{flat}', [App\Http\Controllers\FlatController::class, 'update'])->name('admin.flat.update');
+    Route::get('/list', [App\Http\Controllers\FlatController::class, 'index'])->name('admin.flat.list');
+
+    Route::get('/enable/{id}', [App\Http\Controllers\FlatController::class, 'enable'])->name('admin.flat.enable');
+    Route::get('/disable/{id}', [App\Http\Controllers\FlatController::class, 'disable'])->name('admin.flat.disable');
+
+    Route::get(
+        '/datatable',
+        [App\Http\Controllers\FlatController::class, 'datatable']
+    )->name('flat.datatables');
+
+    Route::get(
+        '/delete/{id}',
+        [App\Http\Controllers\FlatController::class, 'destroy']
+    )->name('flat.delete');
+});
+
+
+// Route Group For Payment Module.
+Route::prefix('payment')->group(function () {
+    // Payment Module
+    Route::get('/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('admin.payment.create');
+    Route::post('/store', [App\Http\Controllers\PaymentController::class, 'store'])->name('admin.payment.store');
+    Route::get('/{payment}/edit', [App\Http\Controllers\PaymentController::class, 'edit'])->name('admin.payment.edit');
+    Route::put('/update/{payment}', [App\Http\Controllers\PaymentController::class, 'update'])->name('admin.payment.update');
+    Route::get('/list', [App\Http\Controllers\PaymentController::class, 'index'])->name('admin.payment.list');
+
+    Route::get('/enable/{id}', [App\Http\Controllers\PaymentController::class, 'enable'])->name('admin.payment.enable');
+    Route::get('/disable/{id}', [App\Http\Controllers\PaymentController::class, 'disable'])->name('admin.payment.disable');
+
+    Route::get(
+        '/datatable',
+        [App\Http\Controllers\PaymentController::class, 'datatable']
+    )->name('payment.datatables');
+
+    Route::get(
+        '/delete/{id}',
+        [App\Http\Controllers\PaymentController::class, 'destroy']
+    )->name('payment.delete');
+});
+
+
+// Ajax Route
+Route::post('getSocietyBlocks', [App\Http\Controllers\FlatController::class, 'getSocietyBlocks'])->name('getSocietyBlocks');
+Route::post('getBlockPlots', [App\Http\Controllers\FlatController::class, 'getBlockPlots'])->name('getBlockPlots');

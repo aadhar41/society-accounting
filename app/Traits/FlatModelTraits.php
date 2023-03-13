@@ -16,19 +16,8 @@ use Auth;
 
 
 
-trait PlotModelTraits
+trait FlatModelTraits
 {
-    /**
-     * Function for eloquent relationship.
-     * Associated Blocks.
-     * @return "returns eloquent relationship"
-     */
-    public function flats()
-    {
-        // return $this->hasMany('App\Models\Flat', 'plot_id')->where('status', '1');
-        return $this->hasMany(Flat::class)->where('status', '1');
-    }
-
     /**
      * Function for eloquent relationship.
      * Associated User.
@@ -57,6 +46,16 @@ trait PlotModelTraits
     public function block()
     {
         return $this->belongsTo('App\Models\Block', 'block_id')->select("id", "unique_code", "name")->where("status", "1");
+    }
+
+    /**
+     * Function for eloquent relationship.
+     * Associated Plot.
+     * @return "returns eloquent relationship"
+     */
+    public function plot()
+    {
+        return $this->belongsTo('App\Models\Plot', 'plot_id')->select("id", "unique_code", "name")->where("status", "1");
     }
 
     /**
