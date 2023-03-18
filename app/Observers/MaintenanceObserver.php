@@ -3,18 +3,23 @@
 namespace App\Observers;
 
 use App\Models\Maintenance;
+use Illuminate\Support\Str;
+use Session;
+use Auth;
 
 class MaintenanceObserver
 {
     /**
      * Handle the Maintenance "created" event.
-     *
+     * register at app\Providers\EventServiceProvider.php
      * @param  \App\Models\Maintenance  $maintenance
      * @return void
      */
     public function created(Maintenance $maintenance)
     {
-        //
+        $str = "MNTNNC";
+        $maintenance->unique_code = str_pad($str, 10, "0", STR_PAD_RIGHT) . $maintenance->id;
+        $maintenance->save();
     }
 
     /**
