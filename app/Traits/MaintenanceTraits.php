@@ -17,19 +17,8 @@ use Auth;
 
 
 
-trait FlatModelTraits
+trait MaintenanceTraits
 {
-    /**
-     * Function for eloquent relationship.
-     * Associated Maintenance.
-     * @return "returns eloquent relationship"
-     */
-    public function maintenances()
-    {
-        // return $this->hasMany('App\Models\Maintenance', 'plot_id')->where('status', '1');
-        return $this->hasMany(Maintenance::class)->where('status', '1');
-    }
-
     /**
      * Function for eloquent relationship.
      * Associated User.
@@ -68,6 +57,16 @@ trait FlatModelTraits
     public function plot()
     {
         return $this->belongsTo('App\Models\Plot', 'plot_id')->select("id", "unique_code", "name")->where("status", "1");
+    }
+
+    /**
+     * Function for eloquent relationship.
+     * Associated Flat.
+     * @return "returns eloquent relationship"
+     */
+    public function flat()
+    {
+        return $this->belongsTo('App\Models\Flat', 'flat_id')->select("id", "unique_code", "name")->where("status", "1");
     }
 
     /**

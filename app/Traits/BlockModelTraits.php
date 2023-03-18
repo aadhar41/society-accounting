@@ -17,7 +17,7 @@ trait BlockModelTraits
 {
     /**
      * Function for eloquent relationship.
-     * Associated Blocks.
+     * Associated Plot.
      * @return "returns eloquent relationship"
      */
     public function plots()
