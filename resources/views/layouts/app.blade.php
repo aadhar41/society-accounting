@@ -8,17 +8,19 @@
     @else
     <title>{{ config('app.name') }}</title>
     @endif
-    
+
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
+    <!-- jQuery -->
+    <script src="{{ URL::asset('assets/jquery/jquery.min.js') }}"></script>
+
     <script src="{{ mix('js/app.js') }}"></script>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ URL::asset('js/common.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-
-
+    
     @yield('third_party_stylesheets')
 
     @stack('page_css')
@@ -72,5 +74,6 @@
 
     @stack('page_scripts')
 </body>
+
 
 </html>

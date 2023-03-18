@@ -25,4 +25,11 @@ class Maintenance extends Model
     protected $guarded = ["user_id"];
 
     const EXCERPT_LENGTH = 250;
+
+    public function setDateAttribute($value)
+    {
+        $data = explode("/", $value);
+        $date = $data[2] . "-" . $data[1] . "-" . $data[0] . " 00:00:00";
+        $this->attributes['date'] = $date;
+    }
 }

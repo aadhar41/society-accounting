@@ -19,6 +19,7 @@ class MaintenanceObserver
     {
         $str = "MNTNNC";
         $maintenance->unique_code = str_pad($str, 10, "0", STR_PAD_RIGHT) . $maintenance->id;
+        // $maintenance->date = date('Y-m-d H:i:s', strtotime($maintenance->date));
         $maintenance->save();
     }
 
