@@ -141,21 +141,21 @@
 
 <li class="nav-item">
     <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-receipt"></i>
+        <i class="nav-icon fas fa-hand-holding-usd"></i>
         <p>
-            Payments
+            Maintenance
             <i class="right fas fa-angle-left"></i>
         </p>
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('admin.payment.create') }}" class="nav-link">
+            <a href="{{ route('admin.maintenance.create') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.payment.list') }}" class="nav-link">
+            <a href="{{ route('admin.maintenance.list') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List</p>
             </a>

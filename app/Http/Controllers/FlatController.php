@@ -319,4 +319,18 @@ class FlatController extends Controller
         echo json_encode(['options' => $options]);
         die;
     }
+    
+    
+    public function getPlotsFlats()
+    {
+        $options = '<option value="">Select</option>';
+        if (!empty($_POST['plot_id'])) {
+            $getPlotsFlats = getPlotsFlats($_POST['plot_id']);
+            foreach ($getPlotsFlats as $id => $name) {
+                $options .= "<option value='" . $id . "' (old('flat') == " . $id . " ? 'selected':'') >" . ucwords($name) . "</option>";
+            }
+        }
+        echo json_encode(['options' => $options]);
+        die;
+    }
 }

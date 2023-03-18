@@ -203,3 +203,29 @@ if (!function_exists('getPaymentStatus')) {
         ];
     }
 }
+
+/* Checking if the function getPaymentStatus exists, if it does not exist, it creates it. */
+if (!function_exists('getMonths')) {
+    /**
+     * It returns an array of months.
+     * 
+     * @return array An array of months.
+     */
+    function getMonths()
+    {
+        return [
+            1 => "January", 
+            2 => "February", 
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December"
+        ];
+    }
+}
