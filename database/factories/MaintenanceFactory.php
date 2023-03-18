@@ -8,12 +8,10 @@ use App\Models\Block;
 use App\Models\Flat;
 use App\Models\Plot;
 use App\Models\User;
-use App\Models\Country;
-use App\Models\State;
-use App\Models\City;
+use App\Models\Maintenance;
 use Illuminate\Support\Str;
 
-class FlatFactory extends Factory
+class MaintenanceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,22 +20,25 @@ class FlatFactory extends Factory
      */
     public function definition()
     {
-        $propertyTypes = getPropertyTypes();
-        $key1 = array_rand($propertyTypes, 1);
+        $maintenanceTypes = getMaintenanceTypes();
+        $paymentStatus = getPaymentStatus();
+        $key1 = array_rand($maintenanceTypes, 1);
+        $key2 = array_rand($paymentStatus, 1);
         return [
             'unique_code' => Str::random(10),
             'user_id' => User::pluck('id')->random(),
             'society_id' => Society::pluck('id')->random(),
             'block_id' => Block::pluck('id')->random(),
             'plot_id' => Plot::pluck('id')->random(),
-            'name' => $this->faker->company(),
-            'slug' => $this->faker->sentence(),
-            'flat_no' => rand(2, 5),
+            'flat_id' => Flat::pluck('id')->random(),
+            'type' => "$key1",
+            'date' => $this->faker->dateTimeThisMonth($max = 'now', $timezone = null),
+            'year' => $this->faker->year($max = 'now'),
+            'month' => $this->faker->year($max = 'now'),
+            'amount' => $this->faker->randomNumber(2),
             'description' => $this->faker->realText($maxNbChars = 100, $indexSize = 2),
-            'mobile_no' => $this->faker->phoneNumber(),
-            'property_type' => "1",
-            'tenant_name' => $this->faker->company(),
-            'tenant_contact' => $this->faker->phoneNumber(),
+            'attachments' => $this->faker->phoneNumber(),
+            'payment_status' => "$key2",
             'status' => "1",
         ];
     }

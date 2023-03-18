@@ -20,7 +20,7 @@ trait PlotModelTraits
 {
     /**
      * Function for eloquent relationship.
-     * Associated Blocks.
+     * Associated Flat.
      * @return "returns eloquent relationship"
      */
     public function flats()
