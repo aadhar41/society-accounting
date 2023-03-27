@@ -11,17 +11,21 @@ use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\BlockStoreRequest;
+use App\Interfaces\BlockRepositoryInterface;
 
 class BlockController extends Controller
 {
+    private BlockRepositoryInterface $blockRepositoryInterface;
+
     /**
      * Apply default authentication middleware for backend routes.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(BlockRepositoryInterface $blockRepositoryInterface)
     {
         $this->middleware('auth');
+        $this->blockRepositoryInterface = $blockRepositoryInterface;
     }
 
     /**
@@ -33,7 +37,7 @@ class BlockController extends Controller
     {
         $title = "blocks";
         $module = "block";
-        $data = Block::active()->latest()->get();
+        $data = $this->blockRepositoryInterface->getAllBlocks();
         return view('block.index', compact('data', 'title', 'module'));
     }
 
@@ -145,12 +149,10 @@ class BlockController extends Controller
      */
     public function store(BlockStoreRequest $request)
     {
-        $data = $request->input();
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->remove('society');
-            Block::create($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            $this->blockRepositoryInterface->createBlock(request()->only(["name", "user_id", "society_id", "total_flats", "description"]));
             return redirect()->route('admin.block.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.block.create')->with('error', $e->getMessage());
@@ -177,10 +179,10 @@ class BlockController extends Controller
     public function edit(Block $block, Request $request)
     {
         try {
-            $listings = Block::findOrFail($block->id);
             $title = "block";
             $module = "block";
             $societies = getSocieties();
+            $listings = $this->blockRepositoryInterface->getBlockById($block->id);
             return view('block.edit', compact('listings', 'title', 'module', 'societies'));
         } catch (\Exception $e) {
             return redirect()->route('admin.block.edit')->with('error', $e->getMessage());
@@ -197,12 +199,9 @@ class BlockController extends Controller
     public function update(BlockStoreRequest $request, Block $block)
     {
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->remove('society');
-            $request->request->remove('_method');
-            $request->request->remove('_token');
-            Block::where(['id' => $block->id])->update($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            $this->blockRepositoryInterface->updateBlock($block->id, request()->only(["name", "user_id", "society_id", "total_flats", "description"]));
             return redirect()->route('admin.block.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.block.list')->with('error', $e->getMessage());
@@ -219,9 +218,7 @@ class BlockController extends Controller
      */
     public function enable(Request $request, Block $block, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->status = "1";
-        $block->save();
+        $this->blockRepositoryInterface->enableRecord($block->id);
         return redirect()->route('admin.block.list')->with('success', 'Record enabled.');
     }
 
@@ -235,9 +232,7 @@ class BlockController extends Controller
      */
     public function disable(Request $request, Block $block, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->status = "0";
-        $block->save();
+        $this->blockRepositoryInterface->disableRecord($block->id);
         return redirect()->route('admin.block.list')->with('warning', 'Record disabled.');
     }
 
@@ -249,9 +244,7 @@ class BlockController extends Controller
      */
     public function destroy(Block $block, $id)
     {
-        $block = Block::findOrFail($id);
-        $block->delete();
-
+        $this->blockRepositoryInterface->deleteBlock($id);
         // Shows the remaining list of blocks.
         return redirect()->route('admin.block.list')->with('error', 'Record deleted successfully.');
     }

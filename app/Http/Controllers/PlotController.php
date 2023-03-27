@@ -154,14 +154,11 @@ class PlotController extends Controller
      */
     public function store(PlotStoreRequest $request)
     {
-        $data = $request->input();
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->add(['block_id' => $request->input('block')]);
-            $request->request->remove('society');
-            $request->request->remove('block');
-            Plot::create($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            request()->merge(['block_id' => $request->input('block')]);
+            Plot::create(request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
             return redirect()->route('admin.plot.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.plot.create')->with('error', $e->getMessage());
@@ -209,14 +206,10 @@ class PlotController extends Controller
     public function update(PlotStoreRequest $request, Plot $plot)
     {
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->add(['block_id' => $request->input('block')]);
-            $request->request->remove('society');
-            $request->request->remove('block');
-            $request->request->remove('_method');
-            $request->request->remove('_token');
-            Plot::where(['id' => $plot->id])->update($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            request()->merge(['block_id' => $request->input('block')]);
+            Plot::where(['id' => $plot->id])->update(request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
             return redirect()->route('admin.plot.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.plot.list')->with('error', $e->getMessage());

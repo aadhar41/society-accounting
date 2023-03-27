@@ -11,17 +11,21 @@ use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\SocietyStoreRequest;
+use App\Interfaces\SocietyRepositoryInterface;
 
 class SocietyController extends Controller
 {
+    private SocietyRepositoryInterface $societyRepositoryInterface;
+
     /**
      * Apply default authentication middleware for backend routes.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SocietyRepositoryInterface $societyRepositoryInterface)
     {
         $this->middleware('auth');
+        $this->societyRepositoryInterface = $societyRepositoryInterface;
     }
 
     /**
@@ -33,7 +37,7 @@ class SocietyController extends Controller
     {
         $title = "societies";
         $module = "society";
-        $data = Society::active()->latest()->get();
+        $data = $this->societyRepositoryInterface->getAllSocieties();
         return view('society.index', compact('data', 'title', 'module'));
     }
 
@@ -145,10 +149,9 @@ class SocietyController extends Controller
      */
     public function store(SocietyStoreRequest $request)
     {
-        $data = $request->input();
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            Society::create($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            $this->societyRepositoryInterface->createSociety(request()->all());
             return redirect()->route('admin.society.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.society.create')->with('error', $e->getMessage());
@@ -177,9 +180,9 @@ class SocietyController extends Controller
         $countries = getCountries();
         $states = getState();
         $cities = getCities();
-        $listings = Society::findOrFail($society->id);
         $title = "society";
         $module = "society";
+        $this->societyRepositoryInterface->getSocietyById($society->id);
         return view('society.edit', compact('listings', 'title', 'module', 'countries', 'states', 'cities'));
     }
 
@@ -192,10 +195,10 @@ class SocietyController extends Controller
      */
     public function update(SocietyStoreRequest $request, Society $society)
     {
-        $data = $request->input();
         try {
+            // request()->merge(['user_id' => Auth::user()->id]);
             $request->request->add(['user_id' => Auth::user()->id]);
-            Society::where(['id' => $society->id])->update($request->validated());
+            $this->societyRepositoryInterface->updateSociety($society->id, $request->validated());
             return redirect()->route('admin.society.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.society.edit')->with('error', $e->getMessage());
@@ -212,9 +215,7 @@ class SocietyController extends Controller
      */
     public function enable(Request $request, Society $society, $id)
     {
-        $society = Society::findOrFail($id);
-        $society->status = "1";
-        $society->save();
+        $society = $this->societyRepositoryInterface->enableRecord($id);
         return redirect()->route('admin.society.list')->with('success', 'Record enabled.');
     }
 
@@ -228,9 +229,7 @@ class SocietyController extends Controller
      */
     public function disable(Request $request, Society $society, $id)
     {
-        $society = Society::findOrFail($id);
-        $society->status = "0";
-        $society->save();
+        $society = $this->societyRepositoryInterface->disableRecord($id);
         return redirect()->route('admin.society.list')->with('warning', 'Record disabled.');
     }
 
@@ -242,12 +241,8 @@ class SocietyController extends Controller
      */
     public function destroy(Society $society, $id)
     {
-         // $society = Profession::where('id', $id)->withTrashed()->first();
-
-         $society = Society::findOrFail($id);
-         $society->delete();
- 
-         // Shows the remaining list of societies.
-         return redirect()->route('admin.society.list')->with('error', 'Record deleted successfully.');
+        $this->societyRepositoryInterface->deleteSociety($id);
+        // Shows the remaining list of societies.
+        return redirect()->route('admin.society.list')->with('error', 'Record deleted successfully.');
     }
 }
