@@ -218,7 +218,7 @@ class BlockController extends Controller
      */
     public function enable(Request $request, Block $block, $id)
     {
-        $this->blockRepositoryInterface->enableRecord($block->id);
+        $this->blockRepositoryInterface->enableRecord($id);
         return redirect()->route('admin.block.list')->with('success', 'Record enabled.');
     }
 
@@ -232,7 +232,7 @@ class BlockController extends Controller
      */
     public function disable(Request $request, Block $block, $id)
     {
-        $this->blockRepositoryInterface->disableRecord($block->id);
+        $this->blockRepositoryInterface->disableRecord($id);
         return redirect()->route('admin.block.list')->with('warning', 'Record disabled.');
     }
 

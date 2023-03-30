@@ -12,17 +12,21 @@ use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\PlotStoreRequest;
+use App\Interfaces\PlotRepositoryInterface;
 
 class PlotController extends Controller
 {
+    private PlotRepositoryInterface $plotRepositoryInterface;
+
     /**
      * Apply default authentication middleware for backend routes.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PlotRepositoryInterface $plotRepositoryInterface)
     {
         $this->middleware('auth');
+        $this->plotRepositoryInterface = $plotRepositoryInterface;
     }
 
     /**
@@ -34,7 +38,7 @@ class PlotController extends Controller
     {
         $title = "plots";
         $module = "plot";
-        $data = Plot::active()->latest()->get();
+        $data = $this->plotRepositoryInterface->getAllPlots();
         return view('plot.index', compact('data', 'title', 'module'));
     }
 
@@ -158,7 +162,7 @@ class PlotController extends Controller
             request()->merge(['user_id' => Auth::user()->id]);
             request()->merge(['society_id' => $request->input('society')]);
             request()->merge(['block_id' => $request->input('block')]);
-            Plot::create(request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
+            $this->plotRepositoryInterface->createPlot(request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
             return redirect()->route('admin.plot.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.plot.create')->with('error', $e->getMessage());
@@ -185,11 +189,11 @@ class PlotController extends Controller
     public function edit(Plot $plot)
     {
         try {
-            $listings = Plot::findOrFail($plot->id);
             $title = "plot";
             $module = "plot";
             $societies = getSocieties();
             $blocks = getBlocks();
+            $listings = $this->plotRepositoryInterface->getPlotById($plot->id);
             return view('plot.edit', compact('listings', 'title', 'module', 'societies','blocks'));
         } catch (\Exception $e) {
             return redirect()->route('admin.plot.edit')->with('error', $e->getMessage());
@@ -209,7 +213,7 @@ class PlotController extends Controller
             request()->merge(['user_id' => Auth::user()->id]);
             request()->merge(['society_id' => $request->input('society')]);
             request()->merge(['block_id' => $request->input('block')]);
-            Plot::where(['id' => $plot->id])->update(request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
+            $this->plotRepositoryInterface->updatePlot($plot->id, request()->only(["name", "user_id", "society_id", "block_id", "total_floors", "total_flats", "description"]));
             return redirect()->route('admin.plot.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.plot.list')->with('error', $e->getMessage());
@@ -226,9 +230,7 @@ class PlotController extends Controller
      */
     public function enable(Request $request, Plot $plot, $id)
     {
-        $plot = Plot::findOrFail($id);
-        $plot->status = "1";
-        $plot->save();
+        $this->plotRepositoryInterface->enableRecord($id);
         return redirect()->route('admin.plot.list')->with('success', 'Record enabled.');
     }
 
@@ -242,9 +244,7 @@ class PlotController extends Controller
      */
     public function disable(Request $request, Plot $plot, $id)
     {
-        $plot = Plot::findOrFail($id);
-        $plot->status = "0";
-        $plot->save();
+        $this->plotRepositoryInterface->disableRecord($id);
         return redirect()->route('admin.plot.list')->with('warning', 'Record disabled.');
     }
 
@@ -256,9 +256,7 @@ class PlotController extends Controller
      */
     public function destroy(Plot $plot, $id)
     {
-        $plot = Plot::findOrFail($id);
-        $plot->delete();
-
+        $this->plotRepositoryInterface->deletePlot($id);
         // Shows the remaining list of plots.
         return redirect()->route('admin.plot.list')->with('error', 'Record deleted successfully.');
     }
