@@ -27,6 +27,46 @@ trait SocietyModelTraits
         return $this->hasMany(Block::class)->where('status', '1');
     }
 
+    /**
+     * This function returns the user that owns the post.
+     * 
+     * @return The user() method returns the user that owns the phone.
+     */
+    public function user()
+    {
+      return $this->belongsTo(User::class);
+    }
+
+    /**
+     * This function returns the country that belongs to the user.
+     * 
+     * @return The country() method returns the country that belongs to the user.
+     */
+    public function associatedCountry()
+    {
+      return $this->belongsTo(Country::class, 'country');
+    }
+
+    /**
+     * This function returns the state that belongs to the city.
+     * 
+     * @return The state() method returns the state that belongs to the city.
+     */
+    public function associatedState()
+    {
+      return $this->belongsTo(State::class, 'state');
+    }
+
+    /**
+     * The `city()` function returns the city that belongs to the user
+     * 
+     * @return A collection of all the cities that belong to the state.
+     */
+    public function associatedCity()
+    {
+      return $this->belongsTo(City::class, 'city');
+    }
+
 
     /**
      * Function for return excerpt of given text.
