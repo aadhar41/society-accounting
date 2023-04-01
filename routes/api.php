@@ -26,5 +26,7 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('societies', SocietyController::class);
+    Route::get('/societies/enable/{society}', [SocietyController::class, 'enable'])->name('societies.enable');
+    Route::get('/societies/disable/{society}', [SocietyController::class, 'disable'])->name('societies.disable');
     Route::post('/logout', [RegisterController::class, 'logout']);
 });

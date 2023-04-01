@@ -202,7 +202,7 @@ class MaintenanceController extends Controller
                 $maintenance->attachments = 'uploads/maintenance/' . $name;
                 $maintenance->save();
             }
-            return redirect()->route('admin.maintenance.list')->with('success', 'Insert successfully.');
+            return redirect()->route('admin.maintenance.list')->with('success', __('messages.create_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.maintenance.create')->with('error', $e->getMessage());
         }
@@ -267,7 +267,7 @@ class MaintenanceController extends Controller
             $request->request->remove('_method');
             $request->request->remove('_token');
             Maintenance::where(['id' => $maintenance->id])->update($request->all());
-            return redirect()->route('admin.maintenance.list')->with('success', 'Updated successfully.');
+            return redirect()->route('admin.maintenance.list')->with('success', __('messages.update_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.maintenance.list')->with('error', $e->getMessage());
         }
@@ -286,7 +286,7 @@ class MaintenanceController extends Controller
         $maintenance = Maintenance::findOrFail($id);
         $maintenance->status = "1";
         $maintenance->save();
-        return redirect()->route('admin.maintenance.list')->with('success', 'Record enabled.');
+        return redirect()->route('admin.maintenance.list')->with('success', __('messages.enable_success'));
     }
 
     /**
@@ -302,7 +302,7 @@ class MaintenanceController extends Controller
         $maintenance = Maintenance::findOrFail($id);
         $maintenance->status = "0";
         $maintenance->save();
-        return redirect()->route('admin.maintenance.list')->with('warning', 'Record disabled.');
+        return redirect()->route('admin.maintenance.list')->with('warning', __('messages.disable_success'));
     }
 
     /**
@@ -317,6 +317,6 @@ class MaintenanceController extends Controller
         $maintenance->delete();
 
         // Shows the remaining list of maintenances.
-        return redirect()->route('admin.maintenance.list')->with('error', 'Record deleted successfully.');
+        return redirect()->route('admin.maintenance.list')->with('error', __('messages.delete_success'));
     }
 }

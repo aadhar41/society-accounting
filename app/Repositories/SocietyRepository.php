@@ -59,38 +59,40 @@ class SocietyRepository implements SocietyRepositoryInterface
      * 
      * @return The query builder instance.
      */
-    public function updateSociety($societyId, $newDetails)
+    public function updateSociety($id, $newDetails)
     {
-        return Society::whereId($societyId)->update($newDetails);
+        $society = Society::find($id);
+        $society->update($newDetails);
+        return $society;
     }
 
     /**
      * It enables a society record
      * 
-     * @param societyId The id of the society you want to enable.
+     * @param id The id of the society you want to enable.
      * 
      * @return The society object.
      */
-    public function enableRecord($societyId)
+    public function enableRecord($id)
     {
-        $society = $this->getSocietyById($societyId);
-        $society->status = "1";
-        $society->save();
-        return $society;
+        $data = Society::findOrFail($id);
+        $data->status = "1";
+        $data->save();
+        return $data;
     }
-    
+
     /**
      * It disables a society record
      * 
-     * @param societyId The id of the society you want to disable.
+     * @param id The id of the society you want to disable.
      * 
      * @return The society object.
      */
-    public function disableRecord($societyId)
+    public function disableRecord($id)
     {
-        $society = $this->getSocietyById($societyId);
-        $society->status = "0";
-        $society->save();
-        return $society;
+        $data = Society::findOrFail($id);
+        $data->status = "0";
+        $data->save();
+        return $data;
     }
 }
