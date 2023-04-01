@@ -20,8 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('societies', [SocietyController::class, 'index']);
-Route::get('/society/{id}', [SocietyController::class, 'show']);
-// // Route::apiResource('societies', [SocietyController::class]);
+// Route::get('societies', [SocietyController::class, 'index']);
+// Route::get('society/{id}', [SocietyController::class, 'show']);
+// Route::post('society', [SocietyController::class, 'store']);
 
-// Route::apiResource('societies', 'Api/SocietyController');
+Route::apiResource('societies', SocietyController::class);

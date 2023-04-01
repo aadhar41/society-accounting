@@ -12,6 +12,7 @@ use Auth;
 
 class SocietyController extends Controller
 {
+
     private SocietyRepositoryInterface $societyRepositoryInterface;
 
     /**
@@ -44,12 +45,17 @@ class SocietyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\SocietyStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SocietyStoreRequest $request)
     {
-        //
+        request()->merge(['user_id' => Auth::user()->id]);
+        $data = $this->societyRepositoryInterface->createSociety(request()->all());
+        if (!$data) {
+            return response()->json(['success' => false, 'message' => 'Society not created.']);
+        }
+        return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
     }
 
     /**
@@ -60,7 +66,11 @@ class SocietyController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = $this->societyRepositoryInterface->getSocietyById($id);
+        if (!$data) {
+            return response()->json(['success' => false, 'message' => 'Society does not exist']);
+        }
+        return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
     }
 
     /**

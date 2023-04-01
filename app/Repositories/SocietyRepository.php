@@ -26,7 +26,7 @@ class SocietyRepository implements SocietyRepositoryInterface
      */
     public function getSocietyById($societyId)
     {
-        return Society::findOrFail($societyId);
+        return Society::active()->findOrFail($societyId);
     }
 
     /**
