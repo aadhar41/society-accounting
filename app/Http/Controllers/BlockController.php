@@ -153,7 +153,7 @@ class BlockController extends Controller
             request()->merge(['user_id' => Auth::user()->id]);
             request()->merge(['society_id' => $request->input('society')]);
             $this->blockRepositoryInterface->createBlock(request()->only(["name", "user_id", "society_id", "total_flats", "description"]));
-            return redirect()->route('admin.block.list')->with('success', 'Insert successfully.');
+            return redirect()->route('admin.block.list')->with('success', __('messages.create_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.block.create')->with('error', $e->getMessage());
         }
@@ -202,7 +202,7 @@ class BlockController extends Controller
             request()->merge(['user_id' => Auth::user()->id]);
             request()->merge(['society_id' => $request->input('society')]);
             $this->blockRepositoryInterface->updateBlock($block->id, request()->only(["name", "user_id", "society_id", "total_flats", "description"]));
-            return redirect()->route('admin.block.list')->with('success', 'Updated successfully.');
+            return redirect()->route('admin.block.list')->with('success', __('messages.update_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.block.list')->with('error', $e->getMessage());
         }
@@ -219,7 +219,7 @@ class BlockController extends Controller
     public function enable(Request $request, Block $block, $id)
     {
         $this->blockRepositoryInterface->enableRecord($id);
-        return redirect()->route('admin.block.list')->with('success', 'Record enabled.');
+        return redirect()->route('admin.block.list')->with('success', __('messages.enable_success'));
     }
 
     /**
@@ -233,7 +233,7 @@ class BlockController extends Controller
     public function disable(Request $request, Block $block, $id)
     {
         $this->blockRepositoryInterface->disableRecord($id);
-        return redirect()->route('admin.block.list')->with('warning', 'Record disabled.');
+        return redirect()->route('admin.block.list')->with('warning', __('messages.disable_success'));
     }
 
     /**
@@ -246,6 +246,6 @@ class BlockController extends Controller
     {
         $this->blockRepositoryInterface->deleteBlock($id);
         // Shows the remaining list of blocks.
-        return redirect()->route('admin.block.list')->with('error', 'Record deleted successfully.');
+        return redirect()->route('admin.block.list')->with('error', __('messages.delete_success'));
     }
 }

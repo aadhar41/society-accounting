@@ -139,6 +139,7 @@
     </ul>
 </li>
 
+<?php /* ?>
 <li class="nav-item">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-hand-holding-usd"></i>
@@ -162,7 +163,7 @@
         </li>
     </ul>
 </li>
-
+<?php */ ?>
 
 <?php /* ?>
 <li class="nav-item">

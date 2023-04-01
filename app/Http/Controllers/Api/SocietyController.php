@@ -26,7 +26,6 @@ class SocietyController extends BaseController
      */
     public function __construct(SocietyRepositoryInterface $societyRepositoryInterface)
     {
-        // $this->middleware('auth');
         $this->societyRepositoryInterface = $societyRepositoryInterface;
     }
 
@@ -39,9 +38,9 @@ class SocietyController extends BaseController
     {
         $data = $this->societyRepositoryInterface->getAllSocieties();
         if (!$data) {
-            $this->sendError("Not found error.", 'Societies retrieved successfully.');
+            $this->sendError("Not found error.", __('messages.retrieved_fail_multiple'));
         }
-        return $this->sendSuccess(SocietyResource::collection($data), 'Societies retrieved successfully.');
+        return $this->sendSuccess(SocietyResource::collection($data), __('messages.retrieved_success_multiple'));
     }
 
     /**
@@ -52,21 +51,17 @@ class SocietyController extends BaseController
      */
     public function store(SocietyStoreRequest $request)
     {
-        // request()->merge(['user_id' => Auth::user()->id]);
-        // $data = $this->societyRepositoryInterface->createSociety(request()->all());
-        // if (!$data) {
-        //     return response()->json(['success' => false, 'message' => 'Society not created.']);
-        // }
-        // return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
-        $validated = $request->validated();
-        if (!$validated) {
-            return $this->sendError('Validation Error.', $validator->errors());
+        try {
+            $validated = $request->validated();
+            if (!$validated) {
+                return $this->sendError('Validation Error.', $validated->errors());
+            }
+            request()->merge(['user_id' => Auth::user()->id]);
+            $data = $this->societyRepositoryInterface->createSociety(request()->all());
+            return $this->sendResponse(new SocietyResource($data), __('messages.create_success'));
+        } catch (\Exception $e) {
+            return $this->sendError('Validation Error.', $e->getMessage());
         }
-
-        request()->merge(['user_id' => Auth::user()->id]);
-        $data = $this->societyRepositoryInterface->createSociety(request()->all());
-
-        return $this->sendResponse(new SocietyResource($data), 'Society created successfully.');
     }
 
     /**
@@ -79,9 +74,9 @@ class SocietyController extends BaseController
     {
         $data = $this->societyRepositoryInterface->getSocietyById($id);
         if (!$data) {
-            return $this->sendError("Not found error.", 'Societies retrieved successfully.');
+            return $this->sendError("Not found error.", __('messages.retrieved_fail'));
         }
-        return $this->sendSuccess(new SocietyResource($data), 'Societies retrieved successfully.');
+        return $this->sendSuccess(new SocietyResource($data), __('messages.retrieved_success'));
     }
 
     /**
@@ -91,9 +86,19 @@ class SocietyController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SocietyStoreRequest $request, $id)
     {
-        //
+        try {
+            $validated = $request->validated();
+            if (!$validated) {
+                return $this->sendError('Validation Error...', $validated->errors());
+            }
+            request()->merge(['user_id' => Auth::user()->id]);
+            $data = $this->societyRepositoryInterface->updateSociety($id, request()->only(["name", "user_id", "contact", "postcode", "country", "state", "city", "address", "description"]));
+            return $this->sendResponse(new SocietyResource($data), __('messages.update_success'));
+        } catch (\Exception $e) {
+            return $this->sendError('Validation Error.', $e->getMessage());
+        }
     }
 
     /**
@@ -105,6 +110,32 @@ class SocietyController extends BaseController
     public function destroy($id)
     {
         $this->societyRepositoryInterface->deleteSociety($id);
-        return $this->sendResponse([], 'Product deleted successfully.');
+        return $this->sendResponse([], __('messages.delete_success'));
+    }
+
+    /**
+     * Enable the specified profession in storage.
+     *
+     * @param $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function enable(Request $request, $id)
+    {
+        $data = $this->societyRepositoryInterface->enableRecord($id);
+        return $this->sendResponse(new SocietyResource($data), __('messages.enable_success'));
+    }
+
+    /**
+     * Disable the specified profession in storage.
+     * 
+     * @param $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function disable(Request $request, $id)
+    {
+        $data = $this->societyRepositoryInterface->disableRecord($id);
+        return $this->sendResponse(new SocietyResource($data), __('messages.disable_success'));
     }
 }

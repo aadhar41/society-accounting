@@ -12,10 +12,15 @@ use Validator;
 
 class RegisterController extends BaseController
 {
+
     /**
-     * Register api
-     *
-     * @return \Illuminate\Http\Response
+     * Register Api
+     * The function takes a request object, validates the request, creates a user, creates a token for
+     * the user, and returns a response
+     * 
+     * @param Request request The request object.
+     * 
+     * @return \Illuminate\Http\Response token and the name of the user.
      */
     public function register(Request $request)
     {
@@ -36,13 +41,18 @@ class RegisterController extends BaseController
         $success['token'] =  $user->createToken('MyApp')->plainTextToken;
         $success['name'] =  $user->name;
 
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, __('messages.register_success'));
     }
 
+
     /**
-     * Login api
-     *
-     * @return \Illuminate\Http\Response
+     * Login Api
+     * If the user is authenticated, then create a token and return the token and the user's name. If
+     * the user is not authenticated, then return an error
+     * 
+     * @param Request request The request object.
+     * 
+     * @return \Illuminate\Http\Response token is being returned.
      */
     public function login(Request $request)
     {
@@ -51,24 +61,24 @@ class RegisterController extends BaseController
             $success['token'] =  $user->createToken('MyApp')->plainTextToken;
             $success['name'] =  $user->name;
 
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse($success, __('messages.login_success'));
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
     }
 
 
+    /**
+     * It deletes all the tokens associated with the user
+     * 
+     * @param Request request The request object.
+     */
     public function logout(Request $request)
     {
         $user = auth()->user();
-        // $user = request()->user();
-        // $user = $request->user();
-        // auth()->user()->tokens()->delete();
-        // return $this->sendResponse($user, 'User logout successfully.');
         if ($user) {
             auth()->user()->tokens()->delete();
-            // $request->user()->currentAccessToken()->delete();
-            return $this->sendResponse([], 'User logout successfully.');
+            return $this->sendSuccess([], __('messages.logout_success'));
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }

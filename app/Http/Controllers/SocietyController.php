@@ -152,7 +152,7 @@ class SocietyController extends Controller
         try {
             request()->merge(['user_id' => Auth::user()->id]);
             $this->societyRepositoryInterface->createSociety(request()->all());
-            return redirect()->route('admin.society.list')->with('success', 'Insert successfully.');
+            return redirect()->route('admin.society.list')->with('success', __('messages.create_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.society.create')->with('error', $e->getMessage());
         }
@@ -196,31 +196,30 @@ class SocietyController extends Controller
     public function update(SocietyStoreRequest $request, Society $society)
     {
         try {
-            // request()->merge(['user_id' => Auth::user()->id]);
             $request->request->add(['user_id' => Auth::user()->id]);
             $this->societyRepositoryInterface->updateSociety($society->id, $request->validated());
-            return redirect()->route('admin.society.list')->with('success', 'Updated successfully.');
+            return redirect()->route('admin.society.list')->with('success', __('messages.update_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.society.edit')->with('error', $e->getMessage());
         }
     }
 
     /**
-     * Enable the specified profession in storage.
+     * Enable the specified society in storage.
      *
      * @param $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Society  $profession
+     * @param  \App\Models\Society  $society
      * @return \Illuminate\Http\Response
      */
     public function enable(Request $request, Society $society, $id)
     {
-        $society = $this->societyRepositoryInterface->enableRecord($id);
-        return redirect()->route('admin.society.list')->with('success', 'Record enabled.');
+        $this->societyRepositoryInterface->enableRecord($id);
+        return redirect()->route('admin.society.list')->with('success', __('messages.enable_success'));
     }
 
     /**
-     * Disable the specified profession in storage.
+     * Disable the specified society in storage.
      * 
      * @param $id
      * @param  \Illuminate\Http\Request  $request
@@ -229,8 +228,8 @@ class SocietyController extends Controller
      */
     public function disable(Request $request, Society $society, $id)
     {
-        $society = $this->societyRepositoryInterface->disableRecord($id);
-        return redirect()->route('admin.society.list')->with('warning', 'Record disabled.');
+        $this->societyRepositoryInterface->disableRecord($id);
+        return redirect()->route('admin.society.list')->with('warning', __('messages.disable_success'));
     }
 
     /**
@@ -242,7 +241,6 @@ class SocietyController extends Controller
     public function destroy(Society $society, $id)
     {
         $this->societyRepositoryInterface->deleteSociety($id);
-        // Shows the remaining list of societies.
-        return redirect()->route('admin.society.list')->with('error', 'Record deleted successfully.');
+        return redirect()->route('admin.society.list')->with('error', __('messages.delete_success'));
     }
 }
