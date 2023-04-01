@@ -41,7 +41,7 @@ class RegisterController extends BaseController
         $success['token'] =  $user->createToken('MyApp')->plainTextToken;
         $success['name'] =  $user->name;
 
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, __('messages.register_success'));
     }
 
 
@@ -61,7 +61,7 @@ class RegisterController extends BaseController
             $success['token'] =  $user->createToken('MyApp')->plainTextToken;
             $success['name'] =  $user->name;
 
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse($success, __('messages.login_success'));
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
@@ -78,7 +78,7 @@ class RegisterController extends BaseController
         $user = auth()->user();
         if ($user) {
             auth()->user()->tokens()->delete();
-            return $this->sendSuccess([], 'User logout successfully.');
+            return $this->sendSuccess([], __('messages.logout_success'));
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
