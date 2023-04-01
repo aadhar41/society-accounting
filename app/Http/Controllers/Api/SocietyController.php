@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Society;
 use App\Http\Requests\SocietyStoreRequest;
 use App\Http\Resources\SocietyResource;
 use App\Interfaces\SocietyRepositoryInterface;
 use Auth;
+use Validator;
+use App\Traits\ApiResponseTraits;
 
-class SocietyController extends Controller
+class SocietyController extends BaseController
 {
 
     private SocietyRepositoryInterface $societyRepositoryInterface;
+    use ApiResponseTraits;
 
     /**
      * Apply default authentication middleware for backend routes.
@@ -34,12 +38,10 @@ class SocietyController extends Controller
     public function index()
     {
         $data = $this->societyRepositoryInterface->getAllSocieties();
-
         if (!$data) {
-            return response()->json(['success' => false, 'message' => 'Societies does not exist']);
+            $this->sendError("Not found error.", 'Societies retrieved successfully.');
         }
-
-        return response()->json(['success' => true, 'societies' => SocietyResource::collection($data)]);
+        return $this->sendSuccess(SocietyResource::collection($data), 'Societies retrieved successfully.');
     }
 
     /**
@@ -50,12 +52,21 @@ class SocietyController extends Controller
      */
     public function store(SocietyStoreRequest $request)
     {
+        // request()->merge(['user_id' => Auth::user()->id]);
+        // $data = $this->societyRepositoryInterface->createSociety(request()->all());
+        // if (!$data) {
+        //     return response()->json(['success' => false, 'message' => 'Society not created.']);
+        // }
+        // return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
+        $validated = $request->validated();
+        if (!$validated) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
         request()->merge(['user_id' => Auth::user()->id]);
         $data = $this->societyRepositoryInterface->createSociety(request()->all());
-        if (!$data) {
-            return response()->json(['success' => false, 'message' => 'Society not created.']);
-        }
-        return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
+
+        return $this->sendResponse(new SocietyResource($data), 'Society created successfully.');
     }
 
     /**
@@ -68,9 +79,9 @@ class SocietyController extends Controller
     {
         $data = $this->societyRepositoryInterface->getSocietyById($id);
         if (!$data) {
-            return response()->json(['success' => false, 'message' => 'Society does not exist']);
+            return $this->sendError("Not found error.", 'Societies retrieved successfully.');
         }
-        return response()->json(['success' => true, 'society' => new SocietyResource($data)]);
+        return $this->sendSuccess(new SocietyResource($data), 'Societies retrieved successfully.');
     }
 
     /**
@@ -93,6 +104,7 @@ class SocietyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->societyRepositoryInterface->deleteSociety($id);
+        return $this->sendResponse([], 'Product deleted successfully.');
     }
 }
