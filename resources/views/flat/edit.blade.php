@@ -4,7 +4,7 @@
 
 @include('partials._select2Assests')
 
-<form action="{{ route('admin.plot.update', $listings->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.flat.update', $listings->id) }}" method="POST" enctype="multipart/form-data">
     {{ method_field('PUT') }}
     @csrf
 
@@ -18,7 +18,7 @@
                     <div class="card card-default">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <a href="{{ route('admin.plot.list') }}" class="btn btn-primary">
+                                <a href="{{ route('admin.flat.list') }}" class="btn btn-primary">
                                     <i class="fas fa-arrow-circle-left"></i> &nbsp;Listing
                                 </a>
                             </h3>
@@ -36,11 +36,10 @@
 
                         <div class="card-body">
                             <div class="row">
-
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" name="name" value="{{ old('name', $listings->name) }}" id="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" placeholder="Name" autocomplete="off" />
+                                        <label for="name">Name :</label>
+                                        <input type="text" name="name" value="{{ old('name') }}" id="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" placeholder="Name" autocomplete="off" />
                                         @if($errors->has('name'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('name') }}</strong>
@@ -49,13 +48,54 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="flat_no">Flat No :</label>
+                                        <input type="number" minlength="1" maxlength="10" name="flat_no" value="{{ old('flat_no') }}" id="flat_no" class="form-control {{ $errors->has('flat_no') ? 'is-invalid' : '' }}" placeholder="Flat No" autocomplete="off" />
+                                        @if($errors->has('flat_no'))
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $errors->first('flat_no') }}</strong>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="mobile_no">Mobile No :</label>
+                                        <input type="number" minlength="1" maxlength="10" name="mobile_no" value="{{ old('mobile_no') }}" id="mobile_no" class="form-control {{ $errors->has('mobile_no') ? 'is-invalid' : '' }}" placeholder="Mobile No" autocomplete="off" />
+                                        @if($errors->has('mobile_no'))
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $errors->first('mobile_no') }}</strong>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="property_type">Property Type :</label>
+                                        <select name="property_type" id="property_type" class="form-control select2 {{ $errors->has('property_type') ? 'is-invalid' : '' }}">
+                                            <option value="">Select</option>
+                                            @foreach($propertyTypes as $id => $name)
+                                            <option value="{{ $id }}" {{ (old("property_type") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('property_type'))
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $errors->first('property_type') }}</strong>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="society">Society :</label>
                                         <select name="society" id="society" class="form-control select2 {{ $errors->has('society') ? 'is-invalid' : '' }}">
                                             <option value="">Select Society</option>
                                             @foreach($societies as $id => $name)
-                                            <option value="{{ $id }}" {{ (old("society", $listings->society_id) == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            <option value="{{ $id }}" {{ (old("society") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('society'))
@@ -66,13 +106,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="block">Block :</label>
                                         <select name="block" id="block" class="form-control select2 {{ $errors->has('block') ? 'is-invalid' : '' }}">
-                                            <option value="">Select</option>
+                                            <option value="">Select block</option>
                                             @foreach($blocks as $id => $name)
-                                            <option value="{{ $id }}" {{ (old("block", $listings->block_id) == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            <option value="{{ $id }}" {{ (old("block") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('block'))
@@ -83,25 +123,42 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="total_flats">Total Flats :</label>
-                                        <input type="number" minlength="1" maxlength="10" name="total_flats" value="{{ old('total_flats', $listings->total_flats) }}" id="total_flats" class="form-control {{ $errors->has('total_flats') ? 'is-invalid' : '' }}" placeholder="Total Flats" autocomplete="off" />
-                                        @if($errors->has('total_flats'))
+                                        <label for="plot">Plot :</label>
+                                        <select name="plot" id="plot" class="form-control select2 {{ $errors->has('plot') ? 'is-invalid' : '' }}">
+                                            <option value="">Select</option>
+                                            @foreach($plots as $id => $name)
+                                            <option value="{{ $id }}" {{ (old("plot") == $id ? "selected":"") }}>{{ ucwords($name) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('plot'))
                                         <div class="invalid-feedback">
-                                            <strong>{{ $errors->first('total_flats') }}</strong>
+                                            <strong>{{ $errors->first('plot') }}</strong>
                                         </div>
                                         @endif
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4">
+                                <div class="col-lg-4 col-md-4 js-rented">
                                     <div class="form-group">
-                                        <label for="total_floors">Total Floors :</label>
-                                        <input type="number" minlength="1" maxlength="10" name="total_floors" value="{{ old('total_floors', $listings->total_floors) }}" id="total_floors" class="form-control {{ $errors->has('total_floors') ? 'is-invalid' : '' }}" placeholder="Total Floors" autocomplete="off" />
-                                        @if($errors->has('total_floors'))
+                                        <label for="tenant_name">Tenant Name :</label>
+                                        <input type="text" name="tenant_name" value="{{ old('tenant_name') }}" id="tenant_name" class="form-control {{ $errors->has('tenant_name') ? 'is-invalid' : '' }}" placeholder="Tenant Name" autocomplete="off" />
+                                        @if($errors->has('tenant_name'))
                                         <div class="invalid-feedback">
-                                            <strong>{{ $errors->first('total_floors') }}</strong>
+                                            <strong>{{ $errors->first('tenant_name') }}</strong>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 js-rented">
+                                    <div class="form-group">
+                                        <label for="tenant_contact">Tenant Contact :</label>
+                                        <input type="number" minlength="1" maxlength="10" name="tenant_contact" value="{{ old('tenant_contact') }}" id="tenant_contact" class="form-control {{ $errors->has('tenant_contact') ? 'is-invalid' : '' }}" placeholder="Tenant Contact" autocomplete="off" />
+                                        @if($errors->has('tenant_contact'))
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $errors->first('tenant_contact') }}</strong>
                                         </div>
                                         @endif
                                     </div>
@@ -110,7 +167,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea name="description" id="description" rows="4" class="ckeditor form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description', $listings->description) }}</textarea>
+                                        <textarea name="description" id="description" rows="4" class="ckeditor form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" placeholder="Description">{{ old('description') }}</textarea>
                                         @if($errors->has('description'))
                                         <div class="invalid-feedback">
                                             <strong>{{ $errors->first('description') }}</strong>
@@ -119,7 +176,9 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary ml-2"><i class="far fa-hand-point-up"></i>&nbsp;&nbsp;Update</button>
+                                <button type="submit" class="btn btn-primary ml-2">
+                                    Submit
+                                </button>
 
                             </div>
                             <!-- /.card-body -->
@@ -145,6 +204,69 @@
 <script>
     $(document).ready(function() {
         $('.select2').select2();
+    });
+
+    $(document).ready(function() {
+        $('#society').on('change', function() {
+            var society_id = this.value;
+            getSocietyBlocks(society_id);
+        });
+
+        function getSocietyBlocks(society_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('getSocietyBlocks') }}",
+                type: "POST",
+                data: {
+                    society_id: society_id,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.options) {
+                        $("#block").html(response.options);
+                    }
+                }
+            });
+        }
+
+        $('#block').on('change', function() {
+            var block_id = this.value;
+            getBlockPlots(block_id);
+        });
+
+        function getBlockPlots(block_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('getBlockPlots') }}",
+                type: "POST",
+                data: {
+                    block_id: block_id,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.options) {
+                        $("#plot").html(response.options);
+                    }
+                }
+            });
+        }
+
+        $(".js-rented").hide();
+        $("#property_type").change(function(e) {
+            e.preventDefault();
+            if (this.value == 2) {
+                $(".js-rented").show();
+            } else {
+                $(".js-rented").hide();
+            }
+        });
+
     });
 </script>
 @include('partials._ckeditor')

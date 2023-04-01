@@ -48,7 +48,7 @@ class FlatController extends Controller
     public function datatable(Request $request)
     {
         // return Datatables::of(Flat::query())->make(true);
-        
+
         $flatdata = Flat::select('flats.id', 'flats.unique_code', 'flats.society_id', 'flats.block_id', 'flats.plot_id', 'flats.name', 'flats.flat_no', 'flats.mobile_no', 'flats.property_type', 'flats.tenant_name', 'flats.tenant_contact', 'flats.status', 'flats.created_at', 'flats.updated_at');
         return Datatables::of($flatdata)
             ->filter(function ($query) use ($request) {
@@ -80,7 +80,7 @@ class FlatController extends Controller
             ->addColumn('unique_code', function ($flatdata) {
                 return $unique_code = (isset($flatdata->unique_code)) ? ucwords($flatdata->unique_code) : "";
             })
-            
+
             ->addColumn('society', function ($flatdata) {
                 return $society = (isset($flatdata->society->name)) ? ucwords($flatdata->society->name) : "";
             })
@@ -104,10 +104,10 @@ class FlatController extends Controller
                 return $property_type = (isset($flatdata->property_type)) ? ucwords($propertyTypes[$flatdata->property_type]) : "";
             })
             ->addColumn('tenant_name', function ($flatdata) {
-                return $tenant_name = (isset($flatdata->tenant_name) && ($flatdata->property_type==2)) ? ucwords($flatdata->tenant_name) : "";
+                return $tenant_name = (isset($flatdata->tenant_name) && ($flatdata->property_type == 2)) ? ucwords($flatdata->tenant_name) : "";
             })
             ->addColumn('tenant_contact', function ($flatdata) {
-                return $tenant_contact = (isset($flatdata->tenant_contact) && ($flatdata->property_type==2)) ? ucwords($flatdata->tenant_contact) : "";
+                return $tenant_contact = (isset($flatdata->tenant_contact) && ($flatdata->property_type == 2)) ? ucwords($flatdata->tenant_contact) : "";
             })
             // ->addColumn('description', function ($flatdata) {
             //     return $description = (isset($flatdata->description)) ? ucwords($flatdata->description) : "";
@@ -174,16 +174,12 @@ class FlatController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->input();
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->add(['block_id' => $request->input('block')]);
-            $request->request->add(['plot_id' => $request->input('block')]);
-            $request->request->remove('society');
-            $request->request->remove('block');
-            $request->request->remove('plot');
-            Flat::create($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            request()->merge(['block_id' => $request->input('block')]);
+            request()->merge(['plot_id' => $request->input('plot')]);
+            Flat::create(request()->only(["name", "user_id", "society_id", "block_id", "plot_id", "flat_no", "mobile_no", "property_type", "tenant_name", "tenant_contact", "description"]));
             return redirect()->route('admin.flat.list')->with('success', 'Insert successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.flat.create')->with('error', $e->getMessage());
@@ -215,7 +211,9 @@ class FlatController extends Controller
             $module = "flat";
             $societies = getSocieties();
             $blocks = getBlocks();
-            return view('flat.edit', compact('listings', 'title', 'module', 'societies', 'blocks'));
+            $plots = getPlots();
+            $propertyTypes = getPropertyTypes();
+            return view('flat.edit', compact('listings','title', 'module', 'societies', 'blocks', 'plots', 'propertyTypes'));
         } catch (\Exception $e) {
             return redirect()->route('admin.flat.edit')->with('error', $e->getMessage());
         }
@@ -231,14 +229,11 @@ class FlatController extends Controller
     public function update(Request $request, Flat $flat)
     {
         try {
-            $request->request->add(['user_id' => Auth::user()->id]);
-            $request->request->add(['society_id' => $request->input('society')]);
-            $request->request->add(['block_id' => $request->input('block')]);
-            $request->request->remove('society');
-            $request->request->remove('block');
-            $request->request->remove('_method');
-            $request->request->remove('_token');
-            Flat::where(['id' => $flat->id])->update($request->all());
+            request()->merge(['user_id' => Auth::user()->id]);
+            request()->merge(['society_id' => $request->input('society')]);
+            request()->merge(['block_id' => $request->input('block')]);
+            request()->merge(['plot_id' => $request->input('plot')]);
+            Flat::where(['id' => $flat->id])->update(request()->only(["name", "user_id", "society_id", "block_id", "plot_id", "flat_no", "mobile_no", "property_type", "tenant_name", "tenant_contact", "description"]));
             return redirect()->route('admin.flat.list')->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.flat.list')->with('error', $e->getMessage());
@@ -319,8 +314,8 @@ class FlatController extends Controller
         echo json_encode(['options' => $options]);
         die;
     }
-    
-    
+
+
     public function getPlotsFlats()
     {
         $options = '<option value="">Select</option>';
