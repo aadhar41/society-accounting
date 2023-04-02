@@ -180,7 +180,7 @@ class FlatController extends Controller
             request()->merge(['block_id' => $request->input('block')]);
             request()->merge(['plot_id' => $request->input('plot')]);
             Flat::create(request()->only(["name", "user_id", "society_id", "block_id", "plot_id", "flat_no", "mobile_no", "property_type", "tenant_name", "tenant_contact", "description"]));
-            return redirect()->route('admin.flat.list')->with('success', 'Insert successfully.');
+            return redirect()->route('admin.flat.list')->with('success', __('messages.create_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.flat.create')->with('error', $e->getMessage());
         }
@@ -234,7 +234,7 @@ class FlatController extends Controller
             request()->merge(['block_id' => $request->input('block')]);
             request()->merge(['plot_id' => $request->input('plot')]);
             Flat::where(['id' => $flat->id])->update(request()->only(["name", "user_id", "society_id", "block_id", "plot_id", "flat_no", "mobile_no", "property_type", "tenant_name", "tenant_contact", "description"]));
-            return redirect()->route('admin.flat.list')->with('success', 'Updated successfully.');
+            return redirect()->route('admin.flat.list')->with('success', __('messages.update_success'));
         } catch (\Exception $e) {
             return redirect()->route('admin.flat.list')->with('error', $e->getMessage());
         }
@@ -253,7 +253,7 @@ class FlatController extends Controller
         $flat = Flat::findOrFail($id);
         $flat->status = "1";
         $flat->save();
-        return redirect()->route('admin.flat.list')->with('success', 'Record enabled.');
+        return redirect()->route('admin.flat.list')->with('success', __('messages.enable_success'));
     }
 
     /**
@@ -269,7 +269,7 @@ class FlatController extends Controller
         $flat = Flat::findOrFail($id);
         $flat->status = "0";
         $flat->save();
-        return redirect()->route('admin.flat.list')->with('warning', 'Record disabled.');
+        return redirect()->route('admin.flat.list')->with('warning', __('messages.disable_success'));
     }
 
     /**
@@ -284,7 +284,7 @@ class FlatController extends Controller
         $flat->delete();
 
         // Shows the remaining list of flats.
-        return redirect()->route('admin.flat.list')->with('error', 'Record deleted successfully.');
+        return redirect()->route('admin.flat.list')->with('error', __('messages.delete_success'));
     }
 
 

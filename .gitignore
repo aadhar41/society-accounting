@@ -16,3 +16,4 @@ yarn-error.log
 /database/backups/*
 /public/assets/*
 /public/uploads/*
+/tests/Backups/*
