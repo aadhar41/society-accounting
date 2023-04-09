@@ -19,20 +19,8 @@
                     <!-- jquery validation -->
                     <div class="card card-default">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('admin.block.list') }}" class="btn btn-primary">
-                                    <i class="fas fa-arrow-circle-left"></i> &nbsp;Listing
-                                </a>
-                            </h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
+                            <x-card-title route="{{ route('admin.block.list') }}" type="primary" title="Record lists" />
+                            <x-card-tools route="{{ route('admin.block.list') }}" type="primary" title="" />
                         </div>
                         <!-- /.card-header -->
 
