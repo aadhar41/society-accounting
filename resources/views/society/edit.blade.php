@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', config('app.name') . ' | ' . ucfirst($title))
+
 @section('content')
 
 @include('partials._select2Assests')

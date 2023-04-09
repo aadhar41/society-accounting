@@ -157,7 +157,7 @@ class FlatController extends Controller
      */
     public function create()
     {
-        $title = "add flat";
+        $title = "create flat";
         $module = "flat";
         $societies = getSocieties();
         $blocks = getBlocks();

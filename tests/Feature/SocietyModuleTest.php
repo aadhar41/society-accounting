@@ -22,6 +22,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_view_create_society_page()
     {
+        $this->withoutExceptionHandling();
+
         $user = \App\Models\User::factory()->create();
         $response = $this->actingAs($user)->get('/society/create');
 
@@ -35,6 +37,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_view_listing_society_page()
     {
+        $this->withoutExceptionHandling();
+
         $user = \App\Models\User::factory()->create();
         $response = $this->actingAs($user)->get('/society/list');
 
@@ -48,6 +52,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_create_society()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -91,6 +97,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_disable_society()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -113,6 +121,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_enable_society()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -137,6 +147,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_create_society_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -185,6 +197,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_update_society_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -217,6 +231,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_see_society_list_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -240,6 +256,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_view_a_society_details_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -263,6 +281,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_enable_society_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -284,6 +304,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_disable_society_api()
     {
+        $this->withoutExceptionHandling();
+
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 
@@ -305,6 +327,8 @@ class SocietyModuleTest extends TestCase
      */
     public function test_authenticated_user_can_delete_society_api()
     {
+        $this->withoutExceptionHandling();
+        
         // 1. Because we are authenticating with sanctrum.
         $user = \App\Models\User::factory()->create();
 

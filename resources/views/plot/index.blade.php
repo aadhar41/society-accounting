@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', config('app.name') . ' | ' . ucfirst($title))
+
 @section('content')
 
 @include('partials._select2Assests')
@@ -42,7 +44,7 @@
                                 <div class="card-header">
                                     <h3 class="card-title">
                                         <a href="{{ route('admin.plot.create') }}" class="btn btn-primary">
-                                            <i class="fas fa-arrow-circle-left"></i>&nbsp;
+                                            <i class="fa fa-plus-circle"></i>&nbsp;
                                             Add Record
                                         </a>
                                     </h3>

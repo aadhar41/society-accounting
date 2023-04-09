@@ -11,7 +11,7 @@
 </div>
 
 <li class="nav-item menu-open">
-    <a href="{{ route('home') }}" class="nav-link active">
+    <a href="{{ route('home') }}" class="nav-link {{url()->current() == route('home') ? 'active' : ''}}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
             Dashboard
@@ -43,7 +43,7 @@
     </ul>
 </li>
 <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="#" class="nav-link {{ (Request::is('society/*')) ? 'active' : '' }}">
         <i class="nav-icon fas fa-gopuram"></i>
         <!-- <i class="fa-sharp fa-regular fa-house-building"></i> -->
         <p>
@@ -53,13 +53,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('admin.society.create') }}" class="nav-link">
+            <a href="{{ route('admin.society.create') }}" class="nav-link {{url()->current() == route('admin.society.create') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.society.list') }}" class="nav-link">
+            <a href="{{ route('admin.society.list') }}" class="nav-link {{url()->current() == route('admin.society.list') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List</p>
             </a>
@@ -68,7 +68,7 @@
 </li>
 
 <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="#" class="nav-link {{ (Request::is('block/*')) ? 'active' : '' }}">
         <i class="nav-icon fas fa-solid fa-building"></i>
         <p>
             Block
@@ -77,13 +77,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('admin.block.create') }}" class="nav-link">
+            <a href="{{ route('admin.block.create') }}" class="nav-link {{url()->current() == route('admin.block.create') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.block.list') }}" class="nav-link">
+            <a href="{{ route('admin.block.list') }}" class="nav-link {{url()->current() == route('admin.block.list') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List</p>
             </a>
@@ -92,7 +92,7 @@
 </li>
 
 <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="#" class="nav-link {{ (Request::is('plot/*')) ? 'active' : '' }}">
         <i class="nav-icon fas far fa-map"></i>
         <p>
             Plots
@@ -101,13 +101,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('admin.plot.create') }}" class="nav-link">
+            <a href="{{ route('admin.plot.create') }}" class="nav-link {{url()->current() == route('admin.plot.create') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.plot.list') }}" class="nav-link">
+            <a href="{{ route('admin.plot.list') }}" class="nav-link {{url()->current() == route('admin.plot.list') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List</p>
             </a>
@@ -116,7 +116,7 @@
 </li>
 
 <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="#" class="nav-link {{ (Request::is('flat/*')) ? 'active' : '' }}">
         <i class="nav-icon fas fa-house-user"></i>
         <p>
             Flats
@@ -125,13 +125,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('admin.flat.create') }}" class="nav-link">
+            <a href="{{ route('admin.flat.create') }}" class="nav-link {{url()->current() == route('admin.flat.create') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Add</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.flat.list') }}" class="nav-link">
+            <a href="{{ route('admin.flat.list') }}" class="nav-link {{url()->current() == route('admin.flat.list') ? 'active' : ''}}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>List</p>
             </a>
