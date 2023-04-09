@@ -33,6 +33,14 @@ class PlotStoreRequest extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'total_floors' => 'Total Floors',
+            'total_flats' => 'Total Flats',
+        ];
+    }
+
     /**
      * Custom message for validation
      *
@@ -41,12 +49,7 @@ class PlotStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name is required!',
-            'society.required' => 'Society field is required!',
-            'block.required' => 'Society field is required!',
-            'total_floors.required' => 'Total Flats is required!',
-            'total_flats.required' => 'Total Flats is required!',
-            'description.required' => 'Description is required!'
+            "*.required" => "The :attribute field cannot be empty.",
         ];
     }
 }

@@ -42,13 +42,19 @@ class FlatStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name is required!',
-            'flat_no.required' => 'Flat No is required!',
-            'description.required' => 'Description is required!',
-            'mobile_no.required' => 'Mobile No field is required!',
-            'property_type.required' => 'Property Type field is required!',
-            'tenant_name.required' => 'Tenant Name is required!',
-            'tenant_contact.required' => 'Tenant Contact is required!',
+            "*.required" => "The :attribute field cannot be empty.",
+        ];
+    }
+
+
+    public function attributes()
+    {
+        return [
+            'flat_no' => 'Flat Number',
+            'mobile_no' => 'Mobile Number',
+            'property_type' => 'Property Type',
+            'tenant_name' => 'Tenant Name',
+            'tenant_contact' => 'Tenant Contact',
         ];
     }
 }

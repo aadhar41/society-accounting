@@ -38,4 +38,23 @@ class MaintenanceStoreRequest extends FormRequest
             'description' => 'required|string|max:600',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'payment_status' => 'Payment Status',
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            "*.required" => "The :attribute field cannot be empty.",
+        ];
+    }
 }
