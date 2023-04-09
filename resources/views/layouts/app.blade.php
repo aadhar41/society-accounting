@@ -3,11 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    @if (!empty($title))
-    <title>{{ ucfirst($title) }}</title>
-    @else
-    <title>{{ config('app.name') }}</title>
-    @endif
+    <title>@yield('title', config('app.name'))</title>
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 

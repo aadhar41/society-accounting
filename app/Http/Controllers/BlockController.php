@@ -135,7 +135,7 @@ class BlockController extends Controller
      */
     public function create()
     {
-        $title = "add block";
+        $title = "create block";
         $module = "block";
         $societies = getSocieties();
         return view('block.create', compact('title', 'module', 'societies'));

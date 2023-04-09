@@ -143,7 +143,7 @@ class PlotController extends Controller
      */
     public function create()
     {
-        $title = "add plot";
+        $title = "create plot";
         $module = "plot";
         $societies = getSocieties();
         $blocks = getBlocks();
