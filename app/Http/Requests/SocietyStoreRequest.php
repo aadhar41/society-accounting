@@ -13,6 +13,8 @@ class SocietyStoreRequest extends FormRequest
      */
     public function authorize()
     {
+        // dd($this->route('society'));
+        // dd($this->method());
         return true;
     }
 
@@ -43,14 +45,7 @@ class SocietyStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name is required!',
-            'contact.required' => 'Contact is required!',
-            'postcode.required' => 'Post Code is required!',
-            'country.required' => 'Country is required!',
-            'state.required' => 'State is required!',
-            'city.required' => 'City is required!',
-            'address.required' => 'Address is required!',
-            'description.required' => 'description is required!'
+            "*.required" => "The :attribute field cannot be empty.",
         ];
     }
 }
