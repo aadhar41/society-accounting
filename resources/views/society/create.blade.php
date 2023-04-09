@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', config('app.name') . ' | ' . ucwords($title))
+
 @section('content')
 
 @include('partials._select2Assests')
@@ -36,10 +38,13 @@
                         <!-- left column -->
                         <div class="col-md-12">
                             <!-- jquery validation -->
-                            <div class="card card-primary">
+                            <div class="card card-default">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        {{ ucfirst($title) }}
+                                        <a href="{{ route('admin.society.list') }}" class="btn btn-primary">
+                                            <i class="fas fa-arrow-circle-left"></i>&nbsp;
+                                            Record Lists
+                                        </a>
                                     </h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">

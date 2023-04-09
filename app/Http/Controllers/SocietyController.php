@@ -136,7 +136,7 @@ class SocietyController extends Controller
         $countries = getCountries();
         $states = getState();
         $cities = getCities();
-        $title = "add society";
+        $title = "create society";
         $module = "society";
         return view('society.create', compact('title', 'module', 'countries', 'states', 'cities'));
     }
