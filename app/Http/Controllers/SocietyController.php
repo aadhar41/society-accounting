@@ -182,7 +182,7 @@ class SocietyController extends Controller
         $cities = getCities();
         $title = "society";
         $module = "society";
-        $this->societyRepositoryInterface->getSocietyById($society->id);
+        $listings = $this->societyRepositoryInterface->getSocietyById($society->id);
         return view('society.edit', compact('listings', 'title', 'module', 'countries', 'states', 'cities'));
     }
 
