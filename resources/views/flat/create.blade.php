@@ -11,22 +11,7 @@
     <div class="container-fluid">
 
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>{{ ucfirst($title) }}</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">{{ $module }}</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <!-- /.container-fluid -->
-        </section>
+        <x-content-header :title="$title" :module="$module" />
 
         <form action="{{ route('admin.flat.store') }}" method="POST" enctype="multipart/form-data">
             {{ method_field('POST') }}
@@ -40,20 +25,8 @@
                             <!-- jquery validation -->
                             <div class="card card-default">
                                 <div class="card-header">
-                                    <h3 class="card-title">
-                                        <a href="{{ route('admin.flat.list') }}" class="btn btn-primary">
-                                            <i class="fas fa-arrow-circle-left"></i>&nbsp;
-                                            All Record
-                                        </a>
-                                    </h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
+                                    <x-card-title route="{{ route('admin.flat.list') }}" type="primary" title="Record Lists" />
+                                    <x-card-tools route="{{ route('admin.flat.list') }}" type="primary" title="" />
                                 </div>
                                 <!-- /.card-header -->
 
