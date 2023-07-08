@@ -87,7 +87,7 @@ class MaintenanceController extends Controller
                 return $plot = (isset($maintenanceData->plot->name)) ? ucwords($maintenanceData->plot->name) : "";
             })
             ->addColumn('flat', function ($maintenanceData) {
-                return $flat = (isset($maintenanceData->flat->name)) ? ucwords($maintenanceData->flat->name) : "";
+                return $flat = (isset($maintenanceData->flat->name)) ? ucwords($maintenanceData->flat->flat_no) : "";
             })
             ->addColumn('type', function ($maintenanceData) {
                 $maintenanceTypes = getMaintenanceTypes();
