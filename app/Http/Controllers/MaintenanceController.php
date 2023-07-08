@@ -145,7 +145,13 @@ class MaintenanceController extends Controller
                     </div>
                 ';
 
-                $final = ($maintenanceData->status == 1) ? $attachments . $editlink . $link . $inactivelink : $attachments . $editlink . $link . $activelink;
+                $viewlink = '
+                    <div class="btn-group">
+                        <a href="' . route('admin.maintenance.show', $maintenanceData->id) . '" class="btn btn-sm smt-1 mb-1 bg-blue" title="View Details" ><i class="fas fa-eye"></i></a>
+                    </div>
+                ';
+
+                $final = ($maintenanceData->status == 1) ? $attachments . $editlink . $link . $inactivelink . $viewlink : $attachments . $editlink . $link . $activelink . $viewlink;
                 // $link = '<a href="' . route('maintenance.delete', $maintenanceData->id) . '" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> ';
                 return $final;
             })
@@ -210,18 +216,26 @@ class MaintenanceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. array_flip
      *
      * @param  \App\Models\Maintenance  $maintenance
      * @return \Illuminate\Http\Response
      */
-    public function show(Maintenance $maintenance)
+    public function show(Request $request, Maintenance $maintenance, $id)
     {
-        //
+        $title = "maintenances";
+        $module = "maintenance";
+        $months = getMonths();
+        $propertyTypes = getPropertyTypes();
+        $maintenanceTypes = getMaintenanceTypes();
+        $paymentStatus = getPaymentStatus();
+        $data = Maintenance::with("createdBy", "society", "society.associatedCountry", "society.associatedState", "society.associatedCity", "block", "plot", "flat")->active()->findOrFail($id);
+        // echo "<pre>"; print_r($data); die();
+        return view('maintenance.show', compact('data', 'title', 'module', 'months', 'propertyTypes', 'maintenanceTypes', 'paymentStatus'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Edit the form for editing the specified resource.
      *
      * @param  \App\Models\Maintenance  $maintenance
      * @return \Illuminate\Http\Response

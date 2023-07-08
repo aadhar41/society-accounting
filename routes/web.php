@@ -124,6 +124,7 @@ Route::prefix('maintenance')->group(function () {
     Route::get('/{payment}/edit', [App\Http\Controllers\MaintenanceController::class, 'edit'])->name('admin.maintenance.edit');
     Route::put('/update/{payment}', [App\Http\Controllers\MaintenanceController::class, 'update'])->name('admin.maintenance.update');
     Route::get('/list', [App\Http\Controllers\MaintenanceController::class, 'index'])->name('admin.maintenance.list');
+    Route::get('/show/{id}', [App\Http\Controllers\MaintenanceController::class, 'show'])->name('admin.maintenance.show');
 
     Route::get('/enable/{id}', [App\Http\Controllers\MaintenanceController::class, 'enable'])->name('admin.maintenance.enable');
     Route::get('/disable/{id}', [App\Http\Controllers\MaintenanceController::class, 'disable'])->name('admin.maintenance.disable');

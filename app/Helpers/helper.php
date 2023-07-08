@@ -8,6 +8,7 @@ use App\Models\Flat;
 use App\Models\Plot;
 use App\Models\Society;
 use App\Models\User;
+use Carbon\Carbon;
 
 /* Checking if the function getCountries exists, if it does not exist, it creates it. */
 if (!function_exists('getCountries')) {
@@ -243,5 +244,19 @@ if (!function_exists('getFlatDetails')) {
     function getFlatDetails()
     {
         return Flat::active()->orderBy('flat_no', 'asc')->get(["id","name","flat_no"]);
+    }
+}
+
+
+if (! function_exists('time_since')) {
+    function time_since($timestamp)
+    {
+        $now = Carbon::now();
+        $timeSince = $now->diffForHumans($timestamp, [
+            'parts' => 1,
+            'syntax' => Carbon::DIFF_ABSOLUTE
+        ]);
+
+        return $timeSince;
     }
 }
