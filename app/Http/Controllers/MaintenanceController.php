@@ -170,7 +170,8 @@ class MaintenanceController extends Controller
         $maintenanceTypes = getMaintenanceTypes();
         $paymentStatus = getPaymentStatus();
         $months = getMonths();
-        return view('maintenance.create', compact('title', 'module', 'societies', 'blocks', 'plots', 'flats', 'propertyTypes', 'maintenanceTypes', 'paymentStatus', 'months'));
+        $flatDetails = getFlatDetails();
+        return view('maintenance.create', compact('title', 'module', 'societies', 'blocks', 'plots', 'flats', 'propertyTypes', 'maintenanceTypes', 'paymentStatus', 'months', 'flatDetails'));
     }
 
     /**

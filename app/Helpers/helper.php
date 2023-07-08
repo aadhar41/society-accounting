@@ -164,7 +164,7 @@ if (!function_exists('getPlotsFlats')) {
      */
     function getPlotsFlats($id = "")
     {
-        return Flat::active()->orderBy('name', 'asc')->where(['plot_id' => $id])->get()->pluck("name", "id");
+        return Flat::active()->orderBy('flat_no', 'asc')->where(['plot_id' => $id])->get(["id","name","flat_no"]);
     }
 }
 
@@ -227,5 +227,21 @@ if (!function_exists('getMonths')) {
             11 => "November",
             12 => "December"
         ];
+    }
+}
+
+
+/* The code is checking if the function `getFlatDetails` already exists. If it does not exist, it
+creates the function. */
+if (!function_exists('getFlatDetails')) {
+    /**
+     * The function "getFlatDetails" returns a collection of active flat names ordered by name.
+     * 
+     * @return Object collection of flat details, specifically the names and IDs of active flats, sorted in
+     * ascending order by name.
+     */
+    function getFlatDetails()
+    {
+        return Flat::active()->orderBy('flat_no', 'asc')->get(["id","name","flat_no"]);
     }
 }
